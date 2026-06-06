@@ -274,6 +274,11 @@ html, body {
 }
 
 /* Desktop layout: bottom nav → left sidebar */
+/* Hide bottom nav when detail view is open on mobile */
+@media (max-width: 899px) {
+  .bottom-nav.detail-open { display: none !important; }
+}
+
 @media (min-width: 900px) {
   #app {
     display: flex;
@@ -928,15 +933,19 @@ html, body {
 .sync-step-text b { color: var(--text); }
 
 .import-area {
-  background: var(--bg3);
+  display: block;
+  background: var(--surface2);
   border: 2px dashed var(--border);
   border-radius: var(--radius);
-  padding: 30px 20px;
+  padding: 28px 20px;
   text-align: center;
-  margin: 0 16px 16px;
+  margin: 0;
   cursor: pointer;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, background 0.2s;
+  width: 100%;
+  box-sizing: border-box;
 }
+.import-area:hover { border-color: var(--accent); background: rgba(79,142,247,0.05); }
 .import-area:active, .import-area.dragover { border-color: var(--accent); }
 .import-area-icon { font-size: 36px; margin-bottom: 10px; }
 .import-area-title { font-size: 15px; font-weight: 500; margin-bottom: 4px; }
@@ -1146,18 +1155,25 @@ html, body {
 .source-icon-nas  { background:rgba(46,213,115,0.8); }
 
 /* ─── GENRE VIEW ─── */
-.genre-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; padding:0 12px; }
-.genre-card {
-  border-radius:var(--radius); padding:18px 16px;
-  cursor:pointer; transition:transform 0.2s;
-  position:relative; overflow:hidden;
-  min-height:80px;
-  display:flex; flex-direction:column; justify-content:flex-end;
+.genre-grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap:10px; padding:0 12px 12px;
 }
+.genre-card {
+  border-radius:var(--radius);
+  padding:16px 14px;
+  cursor:pointer;
+  transition:transform 0.15s, border-color 0.15s;
+  display:flex; flex-direction:column; align-items:flex-start; gap:8px;
+  background:var(--surface);
+  border:1px solid var(--border);
+}
+.genre-card:hover { border-color:var(--accent); transform:translateY(-2px); }
 .genre-card:active { transform:scale(0.97); }
-.genre-card-bg { position:absolute; inset:0; background-size:cover; background-position:center; filter:brightness(0.35); }
-.genre-name { font-family:var(--font-display); font-size:18px; letter-spacing:1px; position:relative; z-index:1; }
-.genre-count { font-size:12px; color:rgba(255,255,255,0.6); position:relative; z-index:1; margin-top:2px; }
+.genre-card-icon { font-size:28px; line-height:1; }
+.genre-name { font-size:13px; font-weight:700; color:var(--text); letter-spacing:0.3px; }
+.genre-count { font-size:11px; color:var(--text3); margin-top:-4px; }
 
 /* ─── DECADE FILTER ─── */
 .decade-chips { display:flex; gap:8px; padding:0 16px 12px; overflow-x:auto; scrollbar-width:none; }
@@ -2364,7 +2380,7 @@ a { color: var(--accent); text-decoration: none; }
     <!-- COLLECTION VIEW -->
     <div id="collection-view" class="view active">
       <div class="app-header">
-        <div class="app-logo" id="app-logo-main">BluVault</div>
+        <div class="app-logo" id="app-logo-main" onclick="showView('collection-view');currentReleaseView=false;renderGrid()" style="cursor:pointer" title="Kezdőlap">BluVault</div>
         <div class="header-actions">
           <div class="icon-btn" onclick="openShowcase()" title="Showcase / Fal nézet" style="font-size:18px">🖼️</div>
           <div class="icon-btn" onclick="openTimeline()" title="Franchise idővonal" style="font-size:18px">🎬</div>
@@ -2489,7 +2505,7 @@ a { color: var(--accent); text-decoration: none; }
 
       <div class="sync-card">
         <div class="sync-card-title">📥 Importálás XLSX-ből</div>
-        <div class="sync-card-desc">Importáld a meglévő Excel adatbázisodat. Az app megőrzi az összes adatot és kiegészíti képekkel, TMDB adatokkal.</div>
+        <div class="sync-card-desc" style="margin-bottom:12px">Importáld a meglévő Excel adatbázisodat. Az app megőrzi az összes adatot és kiegészíti képekkel, TMDB adatokkal.</div>
         <label class="import-area" for="import-file-input">
           <div class="import-area-icon">📂</div>
           <div class="import-area-title">Válassz XLSX fájlt</div>
@@ -2524,22 +2540,7 @@ a { color: var(--accent); text-decoration: none; }
         </div>
       </div>
 
-      <div class="sync-card">
-        <div class="sync-card-title">⚙️ Alkalmazás neve</div>
-        <div class="sync-card-desc">Az app neve megjelenik a főoldalon és a Home Screen ikonon is.</div>
-        <div style="display:flex;gap:8px;margin-top:4px">
-          <input class="form-input" id="appname-input" placeholder="pl. BluVault, Filmtár, My Movies..." style="flex:1">
-          <button class="btn btn-primary" onclick="saveAppName()" style="flex:0;padding:0 16px;white-space:nowrap">Mentés</button>
-        </div>
-        <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap">
-          <span style="font-size:12px;color:var(--text2);align-self:center">Gyors javaslatok:</span>
-          <button onclick="quickAppName('BluVault')"       class="chip" style="padding:4px 10px;font-size:12px">BluVault</button>
-          <button onclick="quickAppName('Filmtár')"        class="chip" style="padding:4px 10px;font-size:12px">Filmtár</button>
-          <button onclick="quickAppName('My Movies')"      class="chip" style="padding:4px 10px;font-size:12px">My Movies</button>
-          <button onclick="quickAppName('Media Library')"  class="chip" style="padding:4px 10px;font-size:12px">Media Library</button>
-          <button onclick="quickAppName('CineVault')"      class="chip" style="padding:4px 10px;font-size:12px">CineVault</button>
-        </div>
-      </div>
+      
 
       <div class="sync-card">
         <div class="sync-card-title">🎬 TMDB API beállítás</div>
@@ -2715,11 +2716,16 @@ a { color: var(--accent); text-decoration: none; }
     <div class="detail-poster-front" id="detail-poster"></div>
   </div>
   <div class="detail-body">
-    <div class="detail-title" id="detail-title-hu"></div>
-    <div class="detail-title-en" id="detail-title-en"></div>
-    <div style="display:flex;align-items:center;justify-content:space-between">
-      <div class="detail-year-dir" id="detail-year-dir"></div>
-      <div style="font-size:11px;color:var(--text3)" id="detail-position"></div>
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+      <div style="flex:1;min-width:0">
+        <div class="detail-title" id="detail-title-hu"></div>
+        <div class="detail-title-en" id="detail-title-en"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div class="detail-year-dir" id="detail-year-dir"></div>
+          <div style="font-size:11px;color:var(--text3)" id="detail-position"></div>
+        </div>
+      </div>
+      <div id="detail-header-meta" style="flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:6px;padding-top:4px"></div>
     </div>
 
     <div class="detail-badges" id="detail-badges"></div>
@@ -3575,6 +3581,7 @@ function showView(viewId) {
   document.getElementById('person-view')?.classList.remove('open');
   document.getElementById('series-view')?.classList.remove('open');
   document.getElementById('season-view')?.classList.remove('open');
+  document.querySelector('.bottom-nav')?.classList.remove('detail-open');
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById(viewId).classList.add('active');
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -4137,6 +4144,38 @@ function openDetail(idx) {
   document.getElementById('detail-title-hu').textContent = item.title_hu || item.title_en || '?';
   const enDiff = item.title_en && item.title_en !== item.title_hu;
   document.getElementById('detail-title-en').textContent = enDiff ? item.title_en : '';
+
+  // Fill header right-side meta: rating + watched
+  const metaEl = document.getElementById('detail-header-meta');
+  if (metaEl) {
+    const rat = item.rating;
+    const wat = item.watched;
+    const watchedIcon = {watched:'✅', watching:'▶️', watchlist:'👁️', want:'🛒'}[wat] || '';
+    const watchedLabel = {
+      watched:   currentLang==='hu'?'Megnézett':'Watched',
+      watching:  currentLang==='hu'?'Nézem':'Watching',
+      watchlist: currentLang==='hu'?'Megnézem':'Watchlist',
+      want:      currentLang==='hu'?'Megveszem':'Want',
+    }[wat] || '';
+    metaEl.innerHTML = `
+      ${rat ? `<div onclick="openQuickRating(${idx})" title="${currentLang==='hu'?'Értékelés módosítása':'Edit rating'}"
+        style="display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:20px;
+               background:rgba(255,193,7,0.12);border:1px solid rgba(255,193,7,0.3);cursor:pointer;
+               font-size:14px;font-weight:700;color:var(--gold);white-space:nowrap">
+        ⭐ ${rat}<span style="font-size:11px;font-weight:400;color:var(--text3)">/10</span>
+      </div>` : `<div onclick="openQuickRating(${idx})" title="${currentLang==='hu'?'Értékelés':'Rate'}"
+        style="display:flex;align-items:center;gap:4px;padding:5px 10px;border-radius:20px;
+               background:var(--surface);border:1px solid var(--border);cursor:pointer;
+               font-size:13px;color:var(--text3);white-space:nowrap">
+        ☆ ${currentLang==='hu'?'Értékelés':'Rate'}
+      </div>`}
+      ${watchedIcon ? `<div style="display:flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;
+               background:var(--surface);border:1px solid var(--border);
+               font-size:12px;color:var(--text2);white-space:nowrap">
+        ${watchedIcon} ${watchedLabel}
+      </div>` : ''}
+    `;
+  }
   const ydEl = document.getElementById('detail-year-dir');
   if (item.director) {
     const dirLinks = item.director.split(',').map(d => d.trim()).map(d =>
@@ -4173,7 +4212,7 @@ function openDetail(idx) {
   if (allVersions.length > 1) {
     versionsTabs.innerHTML = `
       <div style="font-size:11px;font-weight:600;color:var(--text3);letter-spacing:.06em;margin-bottom:10px">${currentLang==='hu'?'VERZIÓK':'VERSIONS'} (${allVersions.length})</div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;align-items:stretch">
         ${allVersions.map(v => {
           const isActive = v.idx === idx;
           const fmt = formatBadgeText(v.item.format) || v.item.format || '?';
@@ -4181,33 +4220,34 @@ function openDetail(idx) {
           const src = v.item.source === 'nas' ? '🖥️' : '💿';
           const poster = getItemPoster(v.item);
           const hdrLabel = v.item.hdr === 'Dolby Vision' ? 'DV' : (v.item.hdr && v.item.hdr !== 'Nem') ? 'HDR' : '';
+          const editionText = v.item.edition && v.item.edition !== 'Standard' ? escHtml(v.item.edition) : '';
           return `<div onclick="openDetail(${v.idx})"
-            style="display:flex;flex-direction:column;align-items:center;padding:10px 8px;border-radius:10px;
-                   cursor:pointer;gap:8px;
+            style="display:flex;flex-direction:column;align-items:center;padding:10px 8px 12px;border-radius:10px;
+                   cursor:pointer;gap:6px;height:100%;box-sizing:border-box;
                    border:2px solid ${isActive?'var(--accent)':'var(--border)'};
                    background:${isActive?'rgba(79,142,247,0.08)':'var(--surface)'};
                    transition:all 0.15s;text-align:center">
             ${poster
-              ? `<img src="${poster}" style="width:52px;height:76px;object-fit:cover;border-radius:6px;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,0.3)">`
-              : `<div style="width:52px;height:76px;background:var(--surface2);border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px">🎬</div>`}
-            <div style="width:100%">
-              <div style="display:flex;justify-content:center;gap:3px;flex-wrap:wrap;margin-bottom:4px">
-                <span class="format-badge ${fmtCls}" style="font-size:10px;padding:2px 5px">${fmt}</span>
-                ${hdrLabel ? `<span class="hdr-badge hdr-${hdrLabel}" style="font-size:10px;padding:2px 5px">${hdrLabel}</span>` : ''}
+              ? `<img src="${poster}" style="width:48px;height:70px;object-fit:cover;border-radius:5px;flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,0.35)">`
+              : `<div style="width:48px;height:70px;background:var(--surface2);border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:18px">🎬</div>`}
+            <div style="width:100%;flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
+              <div style="display:flex;justify-content:center;gap:3px;flex-wrap:wrap">
+                <span class="format-badge ${fmtCls}" style="font-size:10px;padding:1px 5px">${fmt}</span>
+                ${hdrLabel ? `<span class="hdr-badge hdr-${hdrLabel}" style="font-size:10px;padding:1px 5px">${hdrLabel}</span>` : ''}
               </div>
-              <div style="font-size:11px;color:var(--text3)">${src} ${v.item.country||''}</div>
-              ${v.item.edition && v.item.edition !== 'Standard' ? `<div style="font-size:10px;color:var(--accent);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escHtml(v.item.edition)}</div>` : ''}
+              <div style="font-size:11px;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%">${src} ${v.item.country||''}</div>
+              <div style="font-size:10px;color:var(--accent);min-height:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%">${editionText}</div>
             </div>
           </div>`;
         }).join('')}
         <div onclick="addVersionToItem(${idx})"
           style="display:flex;flex-direction:column;align-items:center;justify-content:center;
-                 padding:10px 8px;border-radius:10px;min-height:120px;
-                 cursor:pointer;border:2px dashed var(--border);color:var(--text3);font-size:22px;
-                 background:transparent;transition:all 0.15s;gap:6px"
+                 padding:10px 8px;border-radius:10px;
+                 cursor:pointer;border:2px dashed var(--border);color:var(--text3);
+                 background:transparent;transition:all 0.15s;gap:4px;min-height:130px"
           onmouseenter="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'"
           onmouseleave="this.style.borderColor='var(--border)';this.style.color='var(--text3)'">
-          <span style="font-size:24px">+</span>
+          <span style="font-size:22px">+</span>
           <span style="font-size:11px">${currentLang==='hu'?'verzió':'version'}</span>
         </div>
       </div>`;
@@ -4255,7 +4295,10 @@ function openDetail(idx) {
 
   // overview
   if (item.overview) {
-    document.getElementById('detail-overview').textContent = item.overview;
+    const overviewText = currentLang === 'en'
+      ? (item.overview_en || item.overview || '')
+      : (item.overview_hu || item.overview || '');
+    document.getElementById('detail-overview').textContent = overviewText;
     document.getElementById('detail-overview-section').style.display = '';
   } else {
     document.getElementById('detail-overview-section').style.display = 'none';
@@ -4415,11 +4458,14 @@ function openDetail(idx) {
 
   renderSimilarFilms(idx);
   document.getElementById('detail-view').classList.add('open');
+  // Hide bottom nav while detail is open on mobile
+  document.querySelector('.bottom-nav')?.classList.add('detail-open');
   document.getElementById('detail-view').scrollTop = 0;
 }
 
 function closeDetail() {
   document.getElementById('detail-view').classList.remove('open');
+  document.querySelector('.bottom-nav')?.classList.remove('detail-open');
 }
 
 function editCurrentItem() {
@@ -5132,6 +5178,8 @@ function saveForm() {
     poster_url: idx !== null ? (db[idx].poster_url || '') : '',
     tmdb_id: idx !== null ? (db[idx].tmdb_id || null) : null,
     overview: idx !== null ? (db[idx].overview || '') : '',
+    overview_hu: idx !== null ? (db[idx].overview_hu || db[idx].overview || '') : '',
+    overview_en: idx !== null ? (db[idx].overview_en || db[idx].overview || '') : '',
     cast: idx !== null ? (db[idx].cast || '') : '',
     collection_name: idx !== null ? (db[idx].collection_name || '') : '',
     cast_detailed: idx !== null ? (db[idx].cast_detailed || []) : [],
@@ -5269,6 +5317,14 @@ async function searchTMDBByTitle(title, year, apiKey) {
           poster_url_en = m.poster_path ? `https://image.tmdb.org/t/p/w500${m.poster_path}` : '';
         }
 
+        // Fetch EN overview separately if we fetched HU details
+        let overview_en = '';
+        try {
+          const enDetailRes = await fetch(`https://api.themoviedb.org/3/movie/${m.id}?api_key=${apiKey}&language=en-US`);
+          const enDetail = await enDetailRes.json();
+          overview_en = enDetail.overview || '';
+        } catch(e) {}
+
         return {
           tmdb_id: m.id,
           title_en: m.original_title || m.title,
@@ -5277,6 +5333,8 @@ async function searchTMDBByTitle(title, year, apiKey) {
           director, cast, cast_detailed, genres,
           studios, trailer_key,
           overview: m.overview || '',
+          overview_hu: m.overview || '',
+          overview_en: overview_en || m.overview || '',
           poster_url:    poster_url_en,
           poster_url_hu: poster_url_hu,
           poster_url_en: poster_url_en,
@@ -8954,34 +9012,54 @@ function getItemsByType() {
   });
 }
 
+const GENRE_ICONS = {
+  'Action':'🎬','Akció':'🎬',
+  'Adventure':'🧭','Kaland':'🧭',
+  'Animation':'🎨','Animáció':'🎨','Animációs':'🎨',
+  'Comedy':'😄','Vígjáték':'😄',
+  'Crime':'🔍','Bűnügyi':'🔍',
+  'Documentary':'🎥','Dokumentum':'🎥',
+  'Drama':'🎭','Dráma':'🎭',
+  'Family':'👨‍👩‍👧','Családi':'👨‍👩‍👧',
+  'Fantasy':'🧙','Fantázia':'🧙','Fantasy':'🧙',
+  'History':'🏛️','Történelmi':'🏛️',
+  'Horror':'💀','Horror':'💀',
+  'Music':'🎵','Zene':'🎵',
+  'Mystery':'🔮','Rejtély':'🔮',
+  'Romance':'❤️','Romantikus':'❤️',
+  'Science Fiction':'🚀','Sci-Fi':'🚀',
+  'Thriller':'⚡','Thriller':'⚡',
+  'War':'🪖','Háborús':'🪖',
+  'Western':'🤠','Western':'🤠',
+  'Sport':'⚽','Sport':'⚽',
+  'Egyéb':'📦','Other':'📦',
+};
+
 function renderGenreGrid() {
   const items = getItemsByType();
   const genreMap = {};
   items.forEach(item => {
     const genres = (item.genres&&item.genres.length) ? item.genres : ['Egyéb'];
     genres.forEach(g => {
-      if (!genreMap[g]) genreMap[g]={count:0,poster:'',items:[]};
+      if (!genreMap[g]) genreMap[g]={count:0};
       genreMap[g].count++;
-      if (!genreMap[g].poster && item.poster_url) genreMap[g].poster=item.poster_url;
     });
   });
   const sorted = Object.entries(genreMap).sort((a,b)=>b[1].count-a[1].count);
   const grid = document.getElementById('genre-grid');
   if (!grid) return;
   if (!sorted.length) {
-    grid.innerHTML=`<div style="grid-column:1/-1;padding:40px;text-align:center;color:var(--text3)">Futtasd a TMDB gazdagítást a műfajok megjelenítéséhez!</div>`;
+    grid.innerHTML=`<div style="grid-column:1/-1;padding:40px;text-align:center;color:var(--text3)">${currentLang==='hu'?'Futtasd a TMDB gazdagítást a műfajok megjelenítéséhez!':'Run TMDB enrichment to show genres!'}</div>`;
     return;
   }
+  const countLabel = currentLang === 'hu' ? 'cím' : 'titles';
   grid.innerHTML = sorted.map(([genre, data]) => {
-    const colors = GENRE_COLORS[genre]||['#4f8ef7','#7c5cfc'];
-    const bg = data.poster
-      ? `<div class="genre-card-bg" style="background-image:url(${data.poster})"></div>`
-      : `<div class="genre-card-bg" style="background:linear-gradient(135deg,${colors[0]},${colors[1]})"></div>`;
+    const icon = GENRE_ICONS[genre] || '🎞️';
     const displayName = tGenre(genre);
     return `<div class="genre-card" onclick="showGenreItems('${escHtml(genre)}')">
-      ${bg}
+      <div class="genre-card-icon">${icon}</div>
       <div class="genre-name">${escHtml(displayName)}</div>
-      <div class="genre-count">${data.count} cím</div>
+      <div class="genre-count">${data.count} ${countLabel}</div>
     </div>`;
   }).join('');
 }
