@@ -501,7 +501,7 @@ html, body {
 #detail-view {
   position: fixed;
   top: 0; left: 0; right: 0;
-  bottom: calc(var(--safe-bottom) + 72px);
+  bottom: 0;
   background: var(--bg);
   z-index: 90;
   overflow-y: auto;
@@ -515,6 +515,10 @@ html, body {
   position: relative;
   height: 320px;
   overflow: hidden;
+}
+.detail-content-area {
+  max-width: 900px;
+  margin: 0 auto;
 }
 .detail-poster-bg {
   position: absolute;
@@ -564,6 +568,8 @@ html, body {
 
 .detail-body {
   padding: 56px 24px 24px;
+  max-width: 860px;
+  margin: 0 auto;
 }
 
 .detail-title {
@@ -1243,7 +1249,7 @@ a { color: var(--accent); text-decoration: none; }
 #person-view {
   position: fixed;
   top: 0; left: 0; right: 0;
-  bottom: calc(var(--safe-bottom) + 72px);
+  bottom: 0;
   background: var(--bg);
   z-index: 95;
   overflow-y: auto;
@@ -1527,7 +1533,7 @@ a { color: var(--accent); text-decoration: none; }
 #series-view {
   position: fixed;
   top: 0; left: 0; right: 0;
-  bottom: calc(var(--safe-bottom) + 72px);
+  bottom: 0;
   background: var(--bg);
   z-index: 97;
   overflow-y: auto;
@@ -1540,7 +1546,7 @@ a { color: var(--accent); text-decoration: none; }
 #season-view {
   position: fixed;
   top: 0; left: 0; right: 0;
-  bottom: calc(var(--safe-bottom) + 72px);
+  bottom: 0;
   background: var(--bg);
   z-index: 98;
   overflow-y: auto;
@@ -2717,8 +2723,8 @@ a { color: var(--accent); text-decoration: none; }
     </div>
 
     <div class="detail-badges" id="detail-badges"></div>
-    <div id="detail-versions-wrap" style="display:none">
-      <div class="versions-tabs" id="detail-versions-tabs"></div>
+    <div id="detail-versions-wrap" style="display:none;padding:12px 16px 0">
+      <div id="detail-versions-tabs"></div>
     </div>
 
     <div class="hu-indicator" id="detail-hu"></div>
@@ -2791,7 +2797,7 @@ a { color: var(--accent); text-decoration: none; }
       <button class="btn btn-danger" id="detail-del-btn" onclick="deleteCurrentItem()">🗑️</button>
     </div>
 
-    <div style="padding-bottom:calc(var(--safe-bottom)+20px)"></div>
+    <div style="padding-bottom:calc(var(--safe-bottom)+100px)"></div>
   </div>
 </div>
 
@@ -2806,7 +2812,7 @@ a { color: var(--accent); text-decoration: none; }
       <div class="person-film-count" id="person-film-count"></div>
     </div>
   </div>
-  <div id="person-body" style="padding-bottom: calc(var(--safe-bottom) + 20px)"></div>
+  <div id="person-body" style="padding-bottom: calc(var(--safe-bottom) + 100px)"></div>
 </div>
 
 <!-- SERIES VIEW (sorozat szezon lista) -->
@@ -2822,7 +2828,7 @@ a { color: var(--accent); text-decoration: none; }
     <div class="detail-year-dir" id="series-year"></div>
     <div id="series-badges" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px"></div>
   </div>
-  <div id="series-seasons-wrap" style="padding-bottom:calc(var(--safe-bottom)+20px)"></div>
+  <div id="series-seasons-wrap" style="padding-bottom:calc(var(--safe-bottom)+100px)"></div>
 </div>
 
 <!-- SEASON VIEW (egy szezon epizód lista) -->
@@ -2835,7 +2841,7 @@ a { color: var(--accent); text-decoration: none; }
     </div>
     <button onclick="markSeasonWatched()" style="background:rgba(46,213,115,0.15);border:1px solid rgba(46,213,115,0.3);color:var(--green);border-radius:var(--radius-sm);padding:7px 12px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap" id="season-mark-btn">✅ Mind megnézve</button>
   </div>
-  <div id="season-episodes-list" style="padding-bottom:calc(var(--safe-bottom)+20px)"></div>
+  <div id="season-episodes-list" style="padding-bottom:calc(var(--safe-bottom)+100px)"></div>
 </div>
 
 <!-- TMDB WIZARD -->
@@ -3075,7 +3081,7 @@ a { color: var(--accent); text-decoration: none; }
     </div>
   </div>
   <div class="franchise-selector" id="franchise-selector"></div>
-  <div id="timeline-body" style="padding-bottom:calc(var(--safe-bottom)+20px)"></div>
+  <div id="timeline-body" style="padding-bottom:calc(var(--safe-bottom)+100px)"></div>
 </div>
 
 <!-- SHOWCASE OVERLAY -->
@@ -3375,6 +3381,60 @@ a { color: var(--accent); text-decoration: none; }
       <input class="form-input" id="f-notes" placeholder="Egyéb megjegyzés...">
     </div>
 
+    <div style="margin:16px 0 8px;font-size:11px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase">Vásárlási adatok</div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <div class="form-label">💰 Vételár</div>
+        <input class="form-input" id="f-purchase-price" placeholder="pl. 14.99" type="text">
+      </div>
+      <div class="form-group">
+        <div class="form-label">🛒 Webáruház</div>
+        <input class="form-input" id="f-retailer" placeholder="pl. Amazon, Media Markt">
+      </div>
+    </div>
+
+    <div style="margin:16px 0 8px;font-size:11px;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase">Fizikai kiadvány részletek</div>
+
+    <div class="form-group">
+      <div class="form-label">📀 Lemez összetétel</div>
+      <input class="form-input" id="f-disc-composition" placeholder="pl. 4K+BD+Bonus, BD+3D">
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <div class="form-label">Forrás</div>
+        <select class="form-select" id="f-source">
+          <option value="disc">💿 Lemez</option>
+          <option value="nas">🖥️ NAS</option>
+          <option value="both">💿+🖥️ Mindkettő</option>
+        </select>
+      </div>
+      <div class="form-group" style="display:flex;flex-direction:column;justify-content:flex-end">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;display:flex;flex-direction:column;gap:10px">
+          <div class="form-toggle-row">
+            <div class="form-toggle-label">Slipcover</div>
+            <div class="toggle" id="toggle-slipcover" onclick="toggleSwitch('toggle-slipcover','f-slipcover')"></div>
+            <input type="hidden" id="f-slipcover" value="false">
+          </div>
+          <div class="form-toggle-row">
+            <div class="form-toggle-label">Memorabilia</div>
+            <div class="toggle" id="toggle-memorabilia" onclick="toggleSwitch('toggle-memorabilia','f-memorabilia')"></div>
+            <input type="hidden" id="f-memorabilia" value="false">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="form-label">🔗 Release ID (kiadvány)</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <input class="form-input" id="f-release-id" placeholder="pl. rel_5051891178762" style="flex:1;font-size:12px;font-family:monospace">
+        <button class="btn btn-ghost" onclick="fPickRelease()" style="flex:0;white-space:nowrap;padding:0 12px">📦 Választ</button>
+      </div>
+      <div id="f-release-preview" style="font-size:12px;color:var(--text3);margin-top:4px"></div>
+    </div>
+
     <button class="btn btn-primary" onclick="saveForm()" style="margin-top:8px;padding:15px;font-size:16px">💾 Mentés</button>
   </div>
 </div>
@@ -3510,6 +3570,11 @@ function saveReleases() {
 //  NAVIGATION
 // ════════════════════════════════════════
 function showView(viewId) {
+  // Close any open overlay views when navigating
+  document.getElementById('detail-view')?.classList.remove('open');
+  document.getElementById('person-view')?.classList.remove('open');
+  document.getElementById('series-view')?.classList.remove('open');
+  document.getElementById('season-view')?.classList.remove('open');
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById(viewId).classList.add('active');
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -3699,8 +3764,20 @@ function getFilteredItems() {
   return db.filter(item => {
     // search filter
     if (q) {
-      const castNames = (item.cast_detailed||[]).map(c=>c.name).join(' ');
-      const searchable = [item.title_hu, item.title_en, item.director, item.barcode, item.country, item.cast, castNames, (item.genres||[]).join(' ')].join(' ').toLowerCase();
+      const castNames = (item.cast_detailed||[]).map(c => c.name + ' ' + (c.character||'')).join(' ');
+      const searchable = [
+        item.title_hu, item.title_en,
+        item.director,
+        item.barcode,
+        item.country,
+        item.cast,
+        castNames,
+        (item.genres||[]).join(' '),
+        (item.studios||[]).join(' '),
+        item.overview,
+        item.collection_name,
+        item.notes,
+      ].filter(Boolean).join(' ').toLowerCase();
       if (!searchable.includes(q)) return false;
     }
     // chip filter
@@ -3892,6 +3969,17 @@ function buildCardHTML(item, realIdx) {
   const srcLabel = item.source==='nas' ? 'NAS' : item.source==='both' ? '💿+NAS' : '💿';
   const srcCls   = item.source==='nas' ? 'card-source-nas' : item.source==='both' ? 'card-source-both' : 'card-source-disc';
 
+  // NAS resolution badge (for NAS/both items without disc format info)
+  const nasRes = item.nas_info?.resolution_label || item.nas_info?.resolution || '';
+  const nasResBadge = (() => {
+    if (!nasRes) return null;
+    const r = nasRes.toUpperCase();
+    if (r.includes('4K') || r.includes('2160')) return {text:'4K', cls:'format-4K'};
+    if (r.includes('1080')) return {text:'1080p', cls:'format-BD'};
+    if (r.includes('720'))  return {text:'720p',  cls:'format-DVD'};
+    return null;
+  })();
+
   const hdrLabel = item.hdr==='Dolby Vision' ? 'DV' : item.hdr==='HDR 10' ? 'HDR10' : (item.hdr&&item.hdr!=='Nem') ? 'HDR' : 'SDR';
   const hdrCls   = item.hdr==='Dolby Vision' ? 'hdr-DV' : (item.hdr&&item.hdr!=='Nem') ? 'hdr-HDR' : 'hdr-SDR';
 
@@ -3912,7 +4000,7 @@ function buildCardHTML(item, realIdx) {
     ${_poster ? `<div class="movie-card-overlay"><div class="movie-card-title">${escHtml(item.title_hu||item.title_en)}</div></div>` : ''}
     <div class="card-info-panel">
       <span class="card-source-badge ${srcCls}">${srcLabel}</span>
-      ${fmtText ? `<span class="format-badge ${fmtClass}">${fmtText}</span>` : ''}
+      ${fmtText ? `<span class="format-badge ${fmtClass}">${fmtText}</span>` : (nasResBadge ? `<span class="format-badge ${nasResBadge.cls}">${nasResBadge.text}</span>` : '')}
       <span class="hdr-badge ${hdrCls}">${hdrLabel}</span>
       ${audioShort ? `<span class="card-audio-badge">${escHtml(audioShort)}</span>` : ''}
       ${item.hu_sync==='Igen' ? '<span class="card-audio-badge">🇭🇺</span>' : ''}
@@ -4084,39 +4172,43 @@ function openDetail(idx) {
   versionsWrap.style.display = '';
   if (allVersions.length > 1) {
     versionsTabs.innerHTML = `
-      <div style="font-size:11px;font-weight:600;color:var(--text3);letter-spacing:.06em;margin-bottom:8px">${currentLang==='hu'?'VERZIÓK':'VERSIONS'} (${allVersions.length})</div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-start">
+      <div style="font-size:11px;font-weight:600;color:var(--text3);letter-spacing:.06em;margin-bottom:10px">${currentLang==='hu'?'VERZIÓK':'VERSIONS'} (${allVersions.length})</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px">
         ${allVersions.map(v => {
           const isActive = v.idx === idx;
           const fmt = formatBadgeText(v.item.format) || v.item.format || '?';
           const fmtCls = formatBadgeClass(v.item.format);
           const src = v.item.source === 'nas' ? '🖥️' : '💿';
           const poster = getItemPoster(v.item);
-          const hdrBadge = v.item.hdr === 'Dolby Vision' ? '<span style="font-size:10px;background:var(--dolby);color:white;border-radius:3px;padding:1px 4px;margin-left:3px">DV</span>'
-            : (v.item.hdr && v.item.hdr !== 'Nem') ? '<span style="font-size:10px;background:var(--hdr);color:white;border-radius:3px;padding:1px 4px;margin-left:3px">HDR</span>' : '';
+          const hdrLabel = v.item.hdr === 'Dolby Vision' ? 'DV' : (v.item.hdr && v.item.hdr !== 'Nem') ? 'HDR' : '';
           return `<div onclick="openDetail(${v.idx})"
-            style="display:flex;gap:8px;align-items:center;padding:8px 10px;border-radius:8px;cursor:pointer;
-                   border:1.5px solid ${isActive?'var(--accent)':'var(--border)'};
+            style="display:flex;flex-direction:column;align-items:center;padding:10px 8px;border-radius:10px;
+                   cursor:pointer;gap:8px;
+                   border:2px solid ${isActive?'var(--accent)':'var(--border)'};
                    background:${isActive?'rgba(79,142,247,0.08)':'var(--surface)'};
-                   transition:all 0.15s;min-width:0">
-            ${poster ? `<img src="${poster}" style="width:28px;height:40px;object-fit:cover;border-radius:4px;flex-shrink:0">` : `<div style="width:28px;height:40px;background:var(--surface2);border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px">🎬</div>`}
-            <div style="min-width:0">
-              <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
+                   transition:all 0.15s;text-align:center">
+            ${poster
+              ? `<img src="${poster}" style="width:52px;height:76px;object-fit:cover;border-radius:6px;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,0.3)">`
+              : `<div style="width:52px;height:76px;background:var(--surface2);border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px">🎬</div>`}
+            <div style="width:100%">
+              <div style="display:flex;justify-content:center;gap:3px;flex-wrap:wrap;margin-bottom:4px">
                 <span class="format-badge ${fmtCls}" style="font-size:10px;padding:2px 5px">${fmt}</span>
-                ${hdrBadge}
+                ${hdrLabel ? `<span class="hdr-badge hdr-${hdrLabel}" style="font-size:10px;padding:2px 5px">${hdrLabel}</span>` : ''}
               </div>
-              <div style="font-size:11px;color:var(--text3);margin-top:3px">${src} ${v.item.country||''}</div>
-              ${v.item.edition && v.item.edition !== 'Standard' ? `<div style="font-size:10px;color:var(--accent);margin-top:1px">${escHtml(v.item.edition)}</div>` : ''}
+              <div style="font-size:11px;color:var(--text3)">${src} ${v.item.country||''}</div>
+              ${v.item.edition && v.item.edition !== 'Standard' ? `<div style="font-size:10px;color:var(--accent);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escHtml(v.item.edition)}</div>` : ''}
             </div>
           </div>`;
         }).join('')}
         <div onclick="addVersionToItem(${idx})"
-          style="display:flex;align-items:center;justify-content:center;padding:8px 14px;border-radius:8px;
-                 cursor:pointer;border:1.5px dashed var(--border);color:var(--text3);font-size:13px;
-                 background:transparent;min-height:56px;transition:all 0.15s"
+          style="display:flex;flex-direction:column;align-items:center;justify-content:center;
+                 padding:10px 8px;border-radius:10px;min-height:120px;
+                 cursor:pointer;border:2px dashed var(--border);color:var(--text3);font-size:22px;
+                 background:transparent;transition:all 0.15s;gap:6px"
           onmouseenter="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'"
           onmouseleave="this.style.borderColor='var(--border)';this.style.color='var(--text3)'">
-          + verzió
+          <span style="font-size:24px">+</span>
+          <span style="font-size:11px">${currentLang==='hu'?'verzió':'version'}</span>
         </div>
       </div>`;
   } else {
@@ -4848,13 +4940,27 @@ function openForm(idx, preBarcode) {
     document.getElementById('f-type').value = item.type || 'Film';
     document.getElementById('f-notes').value = item.notes || '';
     document.getElementById('f-trailer-key').value = item.trailer_key || '';
+    document.getElementById('f-purchase-price').value = item.purchase_price || '';
+    document.getElementById('f-retailer').value = item.retailer || '';
+    document.getElementById('f-disc-composition').value = item.disc_composition || '';
+    document.getElementById('f-source').value = item.source || 'disc';
+    document.getElementById('f-release-id').value = item.release_id || '';
+    const relPreview = document.getElementById('f-release-preview');
+    if (item.release_id) {
+      const rel = releases.find(r => r.id === item.release_id);
+      relPreview.textContent = rel ? '📦 ' + (rel.title||item.release_id) : item.release_id;
+    } else { relPreview.textContent = ''; }
+    setToggle('toggle-slipcover',    'f-slipcover',    !!item.slipcover);
+    setToggle('toggle-memorabilia',  'f-memorabilia',  !!item.memorabilia);
     audioTracks = audioTracksFromItem(item);
     renderAudioPicker();
     setToggle('toggle-sync', 'f-hu-sync', item.hu_sync === 'Igen');
     setToggle('toggle-sub', 'f-hu-sub', item.hu_sub === 'Igen');
   } else {
     // reset
-    ['f-barcode','f-title-hu','f-title-en','f-year','f-rel-year','f-director','f-notes','f-trailer-key'].forEach(id => document.getElementById(id).value = '');
+    ['f-barcode','f-title-hu','f-title-en','f-year','f-rel-year','f-director','f-notes','f-trailer-key',
+     'f-purchase-price','f-retailer','f-disc-composition','f-release-id'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('f-release-preview').textContent = '';
     audioTracks = [];
     renderAudioPicker();
     if (preBarcode) document.getElementById('f-barcode').value = preBarcode;
@@ -4864,13 +4970,75 @@ function openForm(idx, preBarcode) {
     document.getElementById('f-discs').value = 1;
     document.getElementById('f-country').value = 'Csehország';
     document.getElementById('f-type').value = 'Film';
+    document.getElementById('f-source').value = 'disc';
     setToggle('toggle-sync', 'f-hu-sync', false);
     setToggle('toggle-sub', 'f-hu-sub', false);
+    setToggle('toggle-slipcover', 'f-slipcover', false);
+    setToggle('toggle-memorabilia', 'f-memorabilia', false);
     document.getElementById('tmdb-search-result').innerHTML = '';
   }
 
   form.classList.add('open');
   form.scrollTop = 0;
+}
+
+function fPickRelease() {
+  if (!releases.length) {
+    showToast('Még nincsenek kiadványok. Importálj bluray.com CSV-t vagy töltsd ki a Kollekció varázslóval.', 'error');
+    return;
+  }
+  const q = (document.getElementById('f-title-hu')?.value || document.getElementById('f-title-en')?.value || '').toLowerCase();
+  const words = q.split(/\s+/).filter(w => w.length > 2);
+  const sorted = [...releases].sort((a, b) => {
+    const aScore = words.filter(w => (a.title||'').toLowerCase().includes(w)).length;
+    const bScore = words.filter(w => (b.title||'').toLowerCase().includes(w)).length;
+    return bScore - aScore;
+  });
+
+  const overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:400;display:flex;align-items:flex-end;justify-content:center';
+  overlay.innerHTML = `
+    <div style="background:var(--bg2);border-radius:20px 20px 0 0;width:100%;max-width:600px;max-height:75vh;overflow-y:auto;padding:16px 16px 32px">
+      <div style="width:36px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 14px"></div>
+      <div style="font-size:16px;font-weight:700;margin-bottom:12px">📦 Kiadvány kiválasztása</div>
+      <input class="form-input" placeholder="Keresés..." oninput="this._filter()" style="margin-bottom:10px">
+      <div id="fpr-list">
+        ${sorted.slice(0,20).map(r => `
+          <div onclick="fSelectRelease('${r.id}',this.closest('[style*=fixed]'))"
+            style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:8px;cursor:pointer;border:1px solid var(--border);background:var(--surface);margin-bottom:6px">
+            <div style="font-size:20px">📦</div>
+            <div>
+              <div style="font-size:13px;font-weight:600">${escHtml(r.title||r.id)}</div>
+              <div style="font-size:11px;color:var(--text3)">${r.bd_discs||0} lemez · ${(r.film_ids||[]).length} film · ${r.release_year||''}</div>
+            </div>
+          </div>`).join('')}
+      </div>
+      <button onclick="this.closest('[style*=fixed]').remove()" style="width:100%;margin-top:8px;padding:10px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text2);font-size:14px;cursor:pointer">Mégse</button>
+    </div>`;
+  overlay.querySelector('input').addEventListener('input', function() {
+    const q2 = this.value.toLowerCase();
+    const list = overlay.querySelector('#fpr-list');
+    list.innerHTML = releases
+      .filter(r => !q2 || (r.title||'').toLowerCase().includes(q2))
+      .slice(0,20).map(r => `
+        <div onclick="fSelectRelease('${r.id}',this.closest('[style*=fixed]'))"
+          style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:8px;cursor:pointer;border:1px solid var(--border);background:var(--surface);margin-bottom:6px">
+          <div style="font-size:20px">📦</div>
+          <div>
+            <div style="font-size:13px;font-weight:600">${escHtml(r.title||r.id)}</div>
+            <div style="font-size:11px;color:var(--text3)">${r.bd_discs||0} lemez · ${(r.film_ids||[]).length} film · ${r.release_year||''}</div>
+          </div>
+        </div>`).join('');
+  });
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
+  document.body.appendChild(overlay);
+}
+
+function fSelectRelease(releaseId, overlay) {
+  const rel = releases.find(r => r.id === releaseId);
+  document.getElementById('f-release-id').value = releaseId;
+  document.getElementById('f-release-preview').textContent = rel ? '📦 ' + (rel.title||releaseId) : releaseId;
+  overlay?.remove();
 }
 
 function closeForm() {
@@ -4968,7 +5136,13 @@ function saveForm() {
     collection_name: idx !== null ? (db[idx].collection_name || '') : '',
     cast_detailed: idx !== null ? (db[idx].cast_detailed || []) : [],
     genres: idx !== null ? (db[idx].genres || []) : [],
-    source: idx !== null ? (db[idx].source || 'disc') : 'disc',
+    source: document.getElementById('f-source').value || (idx !== null ? (db[idx].source || 'disc') : 'disc'),
+    slipcover: document.getElementById('f-slipcover').value === 'true',
+    memorabilia: document.getElementById('f-memorabilia').value === 'true',
+    purchase_price: document.getElementById('f-purchase-price').value.trim() || (idx !== null ? (db[idx].purchase_price || '') : ''),
+    retailer: document.getElementById('f-retailer').value.trim() || (idx !== null ? (db[idx].retailer || '') : ''),
+    disc_composition: document.getElementById('f-disc-composition').value.trim() || (idx !== null ? (db[idx].disc_composition || '') : ''),
+    release_id: document.getElementById('f-release-id').value.trim() || (idx !== null ? (db[idx].release_id || null) : null),
     nas_info: idx !== null ? (db[idx].nas_info || null) : null,
     jellyfin_id: idx !== null ? (db[idx].jellyfin_id || null) : null,
     rating: idx !== null ? (db[idx].rating || 0) : 0,
@@ -5756,7 +5930,7 @@ function showSellableList() {
   overlay.onclick = e => { if(e.target===overlay) overlay.remove(); };
 
   const sheet = document.createElement('div');
-  sheet.style.cssText = `background:var(--bg2);border-radius:20px 20px 0 0;border-top:1px solid var(--border);width:100%;max-height:80vh;overflow-y:auto;padding-bottom:calc(var(--safe-bottom)+20px)`;
+  sheet.style.cssText = `background:var(--bg2);border-radius:20px 20px 0 0;border-top:1px solid var(--border);width:100%;max-height:80vh;overflow-y:auto;padding-bottom:calc(var(--safe-bottom)+100px)`;
 
   sheet.innerHTML = `
     <div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
