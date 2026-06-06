@@ -430,9 +430,9 @@ html, body {
 }
 
 .format-badge {
-  padding: 2px 5px;
+  padding: 3px 6px;
   border-radius: 3px;
-  font-size: 8px;
+  font-size: 12px;
   font-weight: 700;
   font-family: var(--font-display);
   letter-spacing: 0.3px;
@@ -445,9 +445,9 @@ html, body {
 .format-NAS { background: rgba(46,213,115,0.9); color: white; }
 
 .hdr-badge {
-  padding: 2px 5px;
+  padding: 3px 6px;
   border-radius: 3px;
-  font-size: 8px;
+  font-size: 12px;
   font-weight: 700;
   font-family: var(--font-display);
   display: block;
@@ -475,9 +475,9 @@ html, body {
   z-index: 2;
 }
 .card-source-badge {
-  padding: 2px 5px;
+  padding: 3px 6px;
   border-radius: 3px;
-  font-size: 8px;
+  font-size: 12px;
   font-weight: 700;
   font-family: var(--font-display);
   letter-spacing: 0.3px;
@@ -487,9 +487,9 @@ html, body {
 .card-source-disc { background: rgba(79,142,247,0.85); color: white; }
 .card-source-both { background: rgba(124,92,252,0.85); color: white; }
 .card-audio-badge {
-  padding: 2px 5px;
+  padding: 3px 6px;
   border-radius: 3px;
-  font-size: 7px;
+  font-size: 11px;
   font-weight: 700;
   background: rgba(0,0,0,0.6);
   color: rgba(255,255,255,0.85);
@@ -1189,12 +1189,24 @@ html, body {
 /* ─── WATCHED / WATCHLIST BADGES ─── */
 .status-badge {
   position:absolute; top:6px; left:50%; transform:translateX(-50%);
-  padding:2px 8px; border-radius:10px; font-size:9px; font-weight:700;
+  padding:3px 10px; border-radius:10px; font-size:13px; font-weight:700;
   white-space:nowrap; pointer-events:none;
 }
 .status-watched   { background:rgba(46,213,115,0.85);  color:white; }
 .status-watchlist { background:rgba(245,200,66,0.85);  color:#1a1a00; }
 .status-watching  { background:rgba(79,142,247,0.85);  color:white; }
+.card-missing-dot {
+  position:absolute; bottom:6px; right:6px;
+  width:9px; height:9px; border-radius:50%;
+  pointer-events:none; z-index:3;
+}
+.card-release-badge {
+  position:absolute; bottom:6px; left:6px;
+  font-size:14px; line-height:1; cursor:pointer;
+  z-index:3; filter:drop-shadow(0 1px 2px rgba(0,0,0,0.5));
+  transition:transform 0.15s;
+}
+.card-release-badge:hover { transform:scale(1.2); }
 
 /* ─── WATCHLIST VIEW ─── */
 .watchlist-row {
@@ -2624,6 +2636,12 @@ a { color: var(--accent); text-decoration: none; }
           <button class="btn btn-ghost" onclick="batchFetchPosters()" style="flex:1">🖼️ Hiányzó poszterek letöltése</button>
           <button class="btn btn-primary" onclick="openTmdbWizardMissingPosters()" style="flex:1">🔍 Poszter javító varázsló</button>
           <button class="btn btn-ghost" onclick="openTmdbWizardMissingTmdb()" style="flex:1">🧩 TMDB adat varázsló</button>
+          <button class="btn btn-ghost" onclick="openBlurayManualWizard()" style="flex:1">📀 bluray.com kézi kitöltő</button>
+          <button class="btn btn-ghost" onclick="batchFetchBackdrops()" style="flex:1">🖼️ Hiányzó backropok letöltése</button>
+          <button class="btn btn-ghost" onclick="openQualityWizard()" style="flex:1">📺 4K minőség varázsló</button>
+          <button class="btn btn-ghost" onclick="openDiscWizard()" style="flex:1">📦 Kollekció / lemez varázsló</button>
+          <button class="btn btn-ghost" onclick="openRatingWizard()" style="flex:1">⭐ Értékelés varázsló</button>
+          <button class="btn btn-ghost" onclick="openHuWizard()" style="flex:1">🇭🇺 Magyar hang varázsló</button>
           <button class="btn btn-ghost" onclick="showDuplicatesReport()" style="flex:1">🔎 Duplikátumok keresése</button>
           <button class="btn btn-ghost" onclick="showMissingDataReport()" style="flex:1">📋 Hiányos adatok</button>
           <button class="btn btn-primary" onclick="showSellableList()" style="flex:1">💸 Eladható lemezek</button>
@@ -2659,6 +2677,11 @@ a { color: var(--accent); text-decoration: none; }
       <!-- Kategória/műfaj grid ikon -->
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="18" r="3"/></svg>
       <span class="nav-label">Műfajok</span>
+    </div>
+    <div class="nav-item" id="nav-releases" onclick="showView('collection-view');currentReleaseView=true;document.getElementById('release-view-toggle')?.classList.add('active');renderGrid()">
+      <!-- Doboz/kiadvány ikon -->
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+      <span class="nav-label">Kiadványok</span>
     </div>
     <div class="nav-item" id="nav-stats" onclick="showView('stats-view')">
       <!-- Statisztika/bar chart ikon -->
@@ -2764,6 +2787,7 @@ a { color: var(--accent); text-decoration: none; }
       <button class="btn btn-primary" id="detail-edit-btn" onclick="editCurrentItem()">✏️ <span id="detail-edit-label">Szerkesztés</span></button>
       <button class="btn btn-ghost" id="detail-tmdb-btn" onclick="enrichCurrentItem()">🔄 TMDB</button>
       <button class="btn btn-ghost" id="detail-wizard-btn" onclick="openTmdbWizardSingle(currentDetailIdx)" title="TMDB keresés">🔍</button>
+      <button class="btn btn-ghost" id="detail-backdrop-btn" onclick="fetchDetailBackdrop()" title="Backdrop frissítése TMDB-ről">🖼️</button>
       <button class="btn btn-danger" id="detail-del-btn" onclick="deleteCurrentItem()">🗑️</button>
     </div>
 
@@ -2815,6 +2839,181 @@ a { color: var(--accent); text-decoration: none; }
 </div>
 
 <!-- TMDB WIZARD -->
+
+<!-- 4K QUALITY WIZARD -->
+<div id="quality-wiz-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;align-items:flex-end;justify-content:center" onclick="if(event.target===this)closeQualityWizard()">
+  <div style="background:var(--bg2);border-radius:20px 20px 0 0;width:100%;max-width:680px;max-height:92vh;overflow-y:auto;animation:slideUpWizard 0.3s cubic-bezier(0.4,0,0.2,1)">
+    <div class="wizard-handle"></div>
+    <div class="wizard-header">
+      <div class="wizard-title">📺 4K minőség varázsló</div>
+      <div class="wizard-subtitle" id="qwiz-subtitle"></div>
+    </div>
+    <div class="wizard-progress-bar"><div class="wizard-progress-fill" id="qwiz-bar" style="width:0%"></div></div>
+    <div class="wizard-film-info" id="qwiz-film-info"></div>
+    <div style="padding:16px 20px">
+      <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:8px">HDR / Képminőség</div>
+      <div id="qwiz-hdr-chips" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px"></div>
+      <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:8px">Hangformátum (legjobb sáv)</div>
+      <div id="qwiz-audio-chips" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px"></div>
+      <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:8px">Magyar szinkron?</div>
+      <div id="qwiz-hu-chips" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+    </div>
+    <div class="wizard-footer">
+      <button class="btn btn-ghost" onclick="qwizSkip()" style="flex:1">⏭ Kihagyás</button>
+      <button class="btn btn-primary" onclick="qwizSave()" id="qwiz-save-btn" style="flex:2" disabled>💾 Mentés és következő</button>
+      <button class="btn btn-ghost" onclick="closeQualityWizard()" style="flex:0;padding:0 14px">✕</button>
+    </div>
+  </div>
+</div>
+
+<!-- COLLECTION/DISC WIZARD -->
+<div id="disc-wiz-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;align-items:flex-end;justify-content:center" onclick="if(event.target===this)closeDiscWizard()">
+  <div style="background:var(--bg2);border-radius:20px 20px 0 0;width:100%;max-width:680px;max-height:92vh;overflow-y:auto;animation:slideUpWizard 0.3s cubic-bezier(0.4,0,0.2,1)">
+    <div class="wizard-handle"></div>
+    <div class="wizard-header">
+      <div class="wizard-title">📦 Kollekció / lemez varázsló</div>
+      <div class="wizard-subtitle" id="dwiz-subtitle"></div>
+    </div>
+    <div class="wizard-progress-bar"><div class="wizard-progress-fill" id="dwiz-bar" style="width:0%"></div></div>
+    <div class="wizard-film-info" id="dwiz-film-info"></div>
+    <div style="padding:16px 20px">
+      <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:8px">Lemez összetétel</div>
+      <div id="dwiz-disc-chips" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+        <div>
+          <div style="font-size:12px;color:var(--text2);margin-bottom:4px">BD lemezek száma</div>
+          <input class="form-input" id="dwiz-bd-count" type="number" min="0" max="20" placeholder="1" oninput="dwizUpdateSaveBtn()">
+        </div>
+        <div>
+          <div style="font-size:12px;color:var(--text2);margin-bottom:4px">Formátum (kézi)</div>
+          <input class="form-input" id="dwiz-format-custom" placeholder="pl. 4K+BD+Bonus" oninput="dwizUpdateSaveBtn()">
+        </div>
+      </div>
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:8px">Versions group — más kiadásban is megvan?</div>
+        <div id="dwiz-versions-info" style="font-size:12px;color:var(--text3);margin-bottom:6px"></div>
+        <input class="form-input" id="dwiz-versions-search" placeholder="Film keresése (pl. Bourne Identity)..." oninput="dwizSearchVersions()">
+        <div id="dwiz-versions-results" style="max-height:120px;overflow-y:auto;margin-top:6px"></div>
+      </div>
+    </div>
+    <div class="wizard-footer">
+      <button class="btn btn-ghost" onclick="dwizSkip()" style="flex:1">⏭ Kihagyás</button>
+      <button class="btn btn-primary" onclick="dwizSave()" id="dwiz-save-btn" style="flex:2">💾 Mentés és következő</button>
+      <button class="btn btn-ghost" onclick="closeDiscWizard()" style="flex:0;padding:0 14px">✕</button>
+    </div>
+  </div>
+</div>
+
+<!-- RATING WIZARD -->
+<div id="rating-wiz-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;align-items:flex-end;justify-content:center" onclick="if(event.target===this)closeRatingWizard()">
+  <div style="background:var(--bg2);border-radius:20px 20px 0 0;width:100%;max-width:680px;max-height:92vh;overflow-y:auto;animation:slideUpWizard 0.3s cubic-bezier(0.4,0,0.2,1)">
+    <div class="wizard-handle"></div>
+    <div class="wizard-header">
+      <div class="wizard-title">⭐ Értékelés varázsló</div>
+      <div class="wizard-subtitle" id="rwiz-subtitle"></div>
+    </div>
+    <div class="wizard-progress-bar"><div class="wizard-progress-fill" id="rwiz-bar" style="width:0%"></div></div>
+    <div class="wizard-film-info" id="rwiz-film-info"></div>
+    <div style="padding:16px 20px">
+      <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:10px">Értékelés (1–10)</div>
+      <div id="rwiz-stars" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px"></div>
+      <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:8px">Megnézett státusz</div>
+      <div id="rwiz-watched-chips" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+    </div>
+    <div class="wizard-footer">
+      <button class="btn btn-ghost" onclick="rwizSkip()" style="flex:1">⏭ Kihagyás</button>
+      <button class="btn btn-primary" onclick="rwizSave()" id="rwiz-save-btn" style="flex:2" disabled>💾 Mentés és következő</button>
+      <button class="btn btn-ghost" onclick="closeRatingWizard()" style="flex:0;padding:0 14px">✕</button>
+    </div>
+  </div>
+</div>
+
+<!-- HU AUDIO WIZARD -->
+<div id="hu-wiz-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;align-items:flex-end;justify-content:center" onclick="if(event.target===this)closeHuWizard()">
+  <div style="background:var(--bg2);border-radius:20px 20px 0 0;width:100%;max-width:680px;max-height:92vh;overflow-y:auto;animation:slideUpWizard 0.3s cubic-bezier(0.4,0,0.2,1)">
+    <div class="wizard-handle"></div>
+    <div class="wizard-header">
+      <div class="wizard-title">🇭🇺 Magyar hang varázsló</div>
+      <div class="wizard-subtitle" id="hwiz-subtitle"></div>
+    </div>
+    <div class="wizard-progress-bar"><div class="wizard-progress-fill" id="hwiz-bar" style="width:0%"></div></div>
+    <div class="wizard-film-info" id="hwiz-film-info"></div>
+    <div style="padding:16px 20px">
+      <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:8px">Magyar szinkron formátuma</div>
+      <div id="hwiz-audio-chips" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px"></div>
+      <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:8px">Magyar felirat is van?</div>
+      <div id="hwiz-sub-chips" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+    </div>
+    <div class="wizard-footer">
+      <button class="btn btn-ghost" onclick="hwizSkip()" style="flex:1">⏭ Kihagyás</button>
+      <button class="btn btn-primary" onclick="hwizSave()" id="hwiz-save-btn" style="flex:2" disabled>💾 Mentés és következő</button>
+      <button class="btn btn-ghost" onclick="closeHuWizard()" style="flex:0;padding:0 14px">✕</button>
+    </div>
+  </div>
+</div>
+
+<!-- MANUAL BLURAY WIZARD -->
+<div id="manual-wiz-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;align-items:flex-end;justify-content:center" onclick="if(event.target===this)closeManualWizard()">
+  <div style="background:var(--bg);border-radius:20px 20px 0 0;width:100%;max-width:600px;max-height:90vh;overflow-y:auto;padding:16px">
+    <div style="width:40px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 16px"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+      <div style="font-size:18px;font-weight:700">📀 bluray.com kézi kitöltő</div>
+      <span id="mwiz-counter" style="font-size:13px;color:var(--text3)"></span>
+    </div>
+    <div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:14px">
+      <img id="mwiz-poster" style="width:52px;height:76px;object-fit:cover;border-radius:6px;flex-shrink:0" src="" onerror="this.style.display='none'">
+      <div>
+        <div id="mwiz-title" style="font-size:16px;font-weight:700"></div>
+        <div id="mwiz-year" style="font-size:13px;color:var(--text3);margin-top:2px"></div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+      <div><div class="form-label">EAN / UPC vonalkód</div><input class="form-input" id="mwiz-ean" placeholder="pl. 5051891178762"></div>
+      <div><div class="form-label">Stúdió</div><input class="form-input" id="mwiz-studio" placeholder="pl. Warner Bros."></div>
+      <div><div class="form-label">Kiadás típusa</div><input class="form-input" id="mwiz-casing" placeholder="pl. Steelbook"></div>
+      <div><div class="form-label">BD lemezek száma</div><input class="form-input" id="mwiz-bd-discs" type="number" placeholder="1"></div>
+      <div><div class="form-label">DVD lemezek száma</div><input class="form-input" id="mwiz-dvd-discs" type="number" placeholder="0"></div>
+      <div><div class="form-label">Kiadási dátum</div><input class="form-input" id="mwiz-rel-date" placeholder="pl. 2021"></div>
+      <div><div class="form-label">ASIN</div><input class="form-input" id="mwiz-asin" placeholder="pl. B08DVF35T5"></div>
+      <div><div class="form-label">Ár</div><input class="form-input" id="mwiz-price" placeholder="pl. 29.99"></div>
+    </div>
+    <div style="margin-bottom:10px"><div class="form-label">Megjegyzés</div><input class="form-input" id="mwiz-comment" placeholder="Megjegyzés..."></div>
+    <div style="display:flex;gap:16px;margin-bottom:12px">
+      <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer"><input type="checkbox" id="mwiz-slipcover"> Slipcover</label>
+      <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer"><input type="checkbox" id="mwiz-memorabilia"> Memorabilia</label>
+    </div>
+    <div style="margin-bottom:12px">
+      <div class="form-label">Borítókép URL</div>
+      <input class="form-input" id="mwiz-cover-url" placeholder="https://... vagy tölts fel fájlt" style="margin-bottom:6px">
+      <button class="btn-secondary" onclick="document.getElementById('mwiz-cover-file').click()">📁 Fájl feltöltés</button>
+      <input type="file" id="mwiz-cover-file" accept="image/*" style="display:none" onchange="manualWizCoverUpload(event)">
+      <img id="mwiz-cover-preview" style="display:none;max-height:80px;border-radius:6px;margin-top:6px">
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-ghost" onclick="manualWizSkip()" style="flex:1">⏭ Kihagyás</button>
+      <button class="btn btn-primary" onclick="manualWizSave()" style="flex:2">💾 Mentés</button>
+      <button class="btn btn-ghost" onclick="closeManualWizard()" style="flex:0;padding:0 14px">✕</button>
+    </div>
+  </div>
+</div>
+
+<!-- RELEASE WIZARD -->
+<div id="release-wiz-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;align-items:flex-end;justify-content:center" onclick="if(event.target===this)closeReleaseWizard()">
+  <div style="background:var(--bg);border-radius:20px 20px 0 0;width:100%;max-width:600px;max-height:85vh;overflow-y:auto;padding:16px">
+    <div style="width:40px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 16px"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+      <div style="font-size:18px;font-weight:700">🔗 Filmek hozzárendelése</div>
+      <button onclick="closeReleaseWizard()" style="background:none;border:none;color:var(--text3);font-size:22px;cursor:pointer">✕</button>
+    </div>
+    <div id="release-wiz-title" style="font-size:14px;color:var(--text2);margin-bottom:12px"></div>
+    <div id="release-wiz-body"></div>
+    <div style="display:flex;gap:8px;margin-top:12px">
+      <button class="btn btn-ghost" onclick="closeReleaseWizard()" style="flex:1">Mégse</button>
+      <button class="btn btn-primary" onclick="saveReleaseWizard()" style="flex:2">💾 Mentés</button>
+    </div>
+  </div>
+</div>
+
 <div id="tmdb-wizard-overlay" onclick="if(event.target===this)closeTmdbWizard()">
   <div id="tmdb-wizard-sheet">
     <div class="wizard-handle"></div>
@@ -3189,6 +3388,7 @@ a { color: var(--accent); text-decoration: none; }
 // ════════════════════════════════════════
 let db = JSON.parse(localStorage.getItem('bluvault_db') || '[]');
 let settings = JSON.parse(localStorage.getItem('bluvault_settings') || '{}');
+let releases = JSON.parse(localStorage.getItem('bluvault_releases') || '[]');
 // Set default TMDB key if not already saved
 // API keys loaded at runtime — never hardcoded
 let currentFilter = 'all';
@@ -3298,6 +3498,13 @@ function saveDB() {
     saveBackup(currentLang==='hu'?'Auto (50 változás)':'Auto (50 changes)');
   }
 }
+function saveReleases() {
+  try {
+    localStorage.setItem('bluvault_releases', JSON.stringify(releases));
+  } catch(e) {
+    showToast(currentLang==='hu'?'Kiadvány mentési hiba':'Release save error', 'error');
+  }
+}
 
 // ════════════════════════════════════════
 //  NAVIGATION
@@ -3330,31 +3537,35 @@ function renderStats() {
   const total = db.length;
   const uhd = db.filter(m => m.format && m.format.includes('4K')).length;
   const bd = db.filter(m => m.format && m.format.includes('Bluray') && !m.format.includes('4K')).length;
-  const dvd = db.filter(m => m.format === 'DVD').length;
   const dv = db.filter(m => m.hdr === 'Dolby Vision').length;
   const hdr = db.filter(m => m.hdr && m.hdr !== 'Nem').length;
   const hu = db.filter(m => m.hu_sync === 'Igen').length;
   const steel = db.filter(m => m.edition === 'Steelbook').length;
   const watched = db.filter(m => m.watched === 'watched').length;
   const rated = db.filter(m => m.rating).length;
+  const disc = db.filter(m => m.source === 'disc' || m.source === 'both').length;
+  const nas = db.filter(m => m.source === 'nas' || m.source === 'both').length;
 
-  const btn = (num, label, filter) => `
-    <div class="stat-card" onclick="quickFilter('${filter}')" style="cursor:pointer;transition:all 0.2s" 
-      onmouseenter="this.style.borderColor='var(--accent)'" onmouseleave="this.style.borderColor=''">
+  const btn = (num, label, filter, active) => `
+    <div class="stat-card" onclick="quickFilter('${filter}')" style="cursor:pointer;transition:all 0.2s${active ? ';border-color:var(--accent)' : ''}" 
+      onmouseenter="this.style.borderColor='var(--accent)'" onmouseleave="this.style.borderColor='${active ? 'var(--accent)' : ''}'">
       <div class="stat-num">${num}</div>
       <div class="stat-label">${label}</div>
     </div>`;
 
+  const cf = currentFilter;
   document.getElementById('stats-row').innerHTML =
-    btn(total,  t('all'),            'all') +
-    btn(uhd,    '4K UHD',            '4K UHD') +
-    btn(bd,     'Blu-ray',           'Bluray') +
-    btn(dv,     t('dolby_vision'),   'Dolby Vision') +
-    btn(hdr,    'HDR',               'HDR') +
-    btn(hu,     t('hu_sync'),        'hu_sync') +
-    btn(steel,  t('steelbook'),      'Steelbook') +
-    btn(watched, t('watched_stat'),  'watched') +
-    btn(rated,  '⭐ ' + (currentLang==='hu'?'Értékelt':'Rated'), 'rated');
+    btn(total,  t('all'),            'all',          cf==='all') +
+    btn(disc,   '💿 ' + (currentLang==='hu'?'Lemez':'Disc'), 'disc', cf==='disc') +
+    btn(nas,    '🖥️ Jellyfin',       'nas',          cf==='nas') +
+    btn(uhd,    '4K UHD',            '4K UHD',       cf==='4K UHD') +
+    btn(bd,     'Blu-ray',           'Bluray',        cf==='Bluray') +
+    btn(dv,     t('dolby_vision'),   'Dolby Vision', cf==='Dolby Vision') +
+    btn(hdr,    'HDR',               'HDR',           cf==='HDR') +
+    btn(hu,     t('hu_sync'),        'hu_sync',       cf==='hu_sync') +
+    btn(steel,  t('steelbook'),      'Steelbook',     cf==='Steelbook') +
+    btn(watched, t('watched_stat'),  'watched',       cf==='watched') +
+    btn(rated,  '⭐ ' + (currentLang==='hu'?'Értékelt':'Rated'), 'rated', cf==='rated');
 }
 
 function updateSyncStats() {
@@ -3504,6 +3715,8 @@ function getFilteredItems() {
     if (currentFilter === 'Steelbook') return item.edition === 'Steelbook';
     if (currentFilter === 'watched') return item.watched === 'watched';
     if (currentFilter === 'rated')   return !!item.rating;
+    if (currentFilter === 'disc')    return item.source === 'disc' || item.source === 'both';
+    if (currentFilter === 'nas')     return item.source === 'nas'  || item.source === 'both';
     if (currentFilter.startsWith('genre:')) {
       const g = currentFilter.slice(6).toLowerCase();
       return (item.genres||[]).some(genre => genre.toLowerCase() === g);
@@ -3555,9 +3768,9 @@ function quickFilter(filter) {
   document.getElementById('movie-grid').style.display = '';
   document.getElementById('collections-list').style.display = 'none';
   renderGrid();
-  const labels = {'all':'Összes film','4K UHD':'4K UHD','Bluray':'Blu-ray',
-    'Dolby Vision':'Dolby Vision','HDR':'HDR','hu_sync':'🇭🇺 Magyar szinkron',
-    'Steelbook':'Steelbook','watched':'✅ Megnézett','rated':'⭐ Értékelt'};
+  const labels = {'all':'Összes film','disc':'💿 Lemezes kiadványok','nas':'🖥️ Jellyfin / NAS',
+    '4K UHD':'4K UHD','Bluray':'Blu-ray','Dolby Vision':'Dolby Vision','HDR':'HDR',
+    'hu_sync':'🇭🇺 Magyar szinkron','Steelbook':'Steelbook','watched':'✅ Megnézett','rated':'⭐ Értékelt'};
   showToast((labels[filter]||filter) + ' szűrő aktív', 'success');
 }
 
@@ -3649,6 +3862,7 @@ function renderSortFilterUI() {
   const hasActive = activeFilters.length > 0 || currentSort !== 'default';
   bar.innerHTML = `
     <div style="display:flex;gap:6px;flex-wrap:wrap;padding:0 12px 10px;align-items:center">
+      <div onclick="toggleReleaseView()" id="release-view-toggle" style="padding:5px 10px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--text2);display:flex;align-items:center;gap:4px">📦 Kiadványok</div>
       <div style="position:relative;display:inline-block">
         <select onchange="setSort(this.value)" style="background:var(--surface2);border:1px solid var(--border);color:var(--text2);padding:5px 28px 5px 10px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;appearance:none;-webkit-appearance:none">
           ${SORT_OPTIONS.map(s=>`<option value="${s.id}" ${currentSort===s.id?'selected':''}>${t(s.labelKey)}</option>`).join('')}
@@ -3708,7 +3922,9 @@ function buildCardHTML(item, realIdx) {
     ${item.watched==='watchlist' ? '<div class="status-badge status-watchlist">👁️</div>' : ''}
     ${item.watched==='want'      ? '<div class="status-badge status-watchlist">🛒</div>' : ''}
     ${item.watched==='watching'  ? '<div class="status-badge status-watching">▶️</div>'  : ''}
-    ${item.rating ? `<div style="position:absolute;bottom:30px;left:6px;background:rgba(0,0,0,0.7);border-radius:8px;padding:2px 6px;font-size:11px;color:var(--gold)">⭐${item.rating}</div>` : ''}
+    ${item.rating ? `<div style="position:absolute;bottom:30px;left:6px;background:rgba(0,0,0,0.7);border-radius:8px;padding:2px 6px;font-size:13px;color:var(--gold)">⭐${item.rating}</div>` : ''}
+    ${buildMissingDot(item)}
+    ${item.release_id ? `<div class="card-release-badge" onclick="event.stopPropagation();openReleaseDetail('${item.release_id}')" title="Kiadvány megtekintése">📦</div>` : ''}
   </div>`;
 }
 
@@ -3720,6 +3936,7 @@ let _vsObserver = null;      // IntersectionObserver for sentinel
 
 function renderGrid() {
   if (currentFilter === 'collections') { renderCollections(); return; }
+  if (currentReleaseView) { renderReleases(); return; }
 
   clearTimeout(searchDebounce);
   searchDebounce = setTimeout(() => {
@@ -3819,7 +4036,9 @@ function openDetail(idx) {
   const bg = document.getElementById('detail-bg');
   const posterEl = document.getElementById('detail-poster');
   const heroImg = getItemPoster(item);
-  bg.style.backgroundImage = heroImg ? `url(${heroImg})` : '';
+  // Use cover_url (backdrop) as hero background if available, fallback to poster
+  const heroBg = item.cover_url || heroImg;
+  bg.style.backgroundImage = heroBg ? `url(${heroBg})` : '';
   if (heroImg) {
     posterEl.innerHTML = `<img src="${heroImg}" alt="Poszter" onerror="this.parentElement.innerHTML='<div class=detail-poster-placeholder>🎬</div>'">`;
   } else {
@@ -3862,21 +4081,54 @@ function openDetail(idx) {
   const versionsWrap = document.getElementById('detail-versions-wrap');
   const versionsTabs = document.getElementById('detail-versions-tabs');
   const allVersions = getItemVersions(idx);
+  versionsWrap.style.display = '';
   if (allVersions.length > 1) {
-    versionsWrap.style.display = '';
-    versionsTabs.innerHTML = allVersions.map((v, vi) => {
-      const isActive = v.idx === idx;
-      const fmtText = formatBadgeText(v.item.format) || v.item.format || '?';
-      const srcIcon = v.item.source === 'nas' ? '🖥️' : '💿';
-      const countryShort = v.item.country ? ' · ' + v.item.country.slice(0,3) : '';
-      return `<div class="version-tab${isActive?' active':''}" onclick="openDetail(${v.idx})">
-        ${srcIcon} ${fmtText}${countryShort}
+    versionsTabs.innerHTML = `
+      <div style="font-size:11px;font-weight:600;color:var(--text3);letter-spacing:.06em;margin-bottom:8px">${currentLang==='hu'?'VERZIÓK':'VERSIONS'} (${allVersions.length})</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-start">
+        ${allVersions.map(v => {
+          const isActive = v.idx === idx;
+          const fmt = formatBadgeText(v.item.format) || v.item.format || '?';
+          const fmtCls = formatBadgeClass(v.item.format);
+          const src = v.item.source === 'nas' ? '🖥️' : '💿';
+          const poster = getItemPoster(v.item);
+          const hdrBadge = v.item.hdr === 'Dolby Vision' ? '<span style="font-size:10px;background:var(--dolby);color:white;border-radius:3px;padding:1px 4px;margin-left:3px">DV</span>'
+            : (v.item.hdr && v.item.hdr !== 'Nem') ? '<span style="font-size:10px;background:var(--hdr);color:white;border-radius:3px;padding:1px 4px;margin-left:3px">HDR</span>' : '';
+          return `<div onclick="openDetail(${v.idx})"
+            style="display:flex;gap:8px;align-items:center;padding:8px 10px;border-radius:8px;cursor:pointer;
+                   border:1.5px solid ${isActive?'var(--accent)':'var(--border)'};
+                   background:${isActive?'rgba(79,142,247,0.08)':'var(--surface)'};
+                   transition:all 0.15s;min-width:0">
+            ${poster ? `<img src="${poster}" style="width:28px;height:40px;object-fit:cover;border-radius:4px;flex-shrink:0">` : `<div style="width:28px;height:40px;background:var(--surface2);border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px">🎬</div>`}
+            <div style="min-width:0">
+              <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
+                <span class="format-badge ${fmtCls}" style="font-size:10px;padding:2px 5px">${fmt}</span>
+                ${hdrBadge}
+              </div>
+              <div style="font-size:11px;color:var(--text3);margin-top:3px">${src} ${v.item.country||''}</div>
+              ${v.item.edition && v.item.edition !== 'Standard' ? `<div style="font-size:10px;color:var(--accent);margin-top:1px">${escHtml(v.item.edition)}</div>` : ''}
+            </div>
+          </div>`;
+        }).join('')}
+        <div onclick="addVersionToItem(${idx})"
+          style="display:flex;align-items:center;justify-content:center;padding:8px 14px;border-radius:8px;
+                 cursor:pointer;border:1.5px dashed var(--border);color:var(--text3);font-size:13px;
+                 background:transparent;min-height:56px;transition:all 0.15s"
+          onmouseenter="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'"
+          onmouseleave="this.style.borderColor='var(--border)';this.style.color='var(--text3)'">
+          + verzió
+        </div>
       </div>`;
-    }).join('') +
-    `<button class="version-add-btn" onclick="addVersionToItem(${idx})" title="${currentLang==='hu'?'Verzió hozzáadása':'Add version'}">+ verzió</button>`;
   } else {
-    versionsWrap.style.display = '';
-    versionsTabs.innerHTML = `<button class="version-add-btn" onclick="addVersionToItem(${idx})">${currentLang==='hu'?'+ Verzió hozzáadása':'+ Add version'}</button>`;
+    versionsTabs.innerHTML = `
+      <div onclick="addVersionToItem(${idx})"
+        style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;
+               cursor:pointer;border:1.5px dashed var(--border);color:var(--text3);font-size:13px;
+               transition:all 0.15s"
+        onmouseenter="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'"
+        onmouseleave="this.style.borderColor='var(--border)';this.style.color='var(--text3)'">
+        + ${currentLang==='hu'?'Verzió hozzáadása':'Add version'}
+      </div>`;
   }
 
   // HU indicator
@@ -4868,6 +5120,61 @@ async function fetchTMDB(item) {
   if (!key) return null;
   return searchTMDBByTitle(item.title_en || item.title_hu, item.year, key);
 }
+async function fetchDetailBackdrop() {
+  const item = db[currentDetailIdx];
+  if (!item) return;
+  if (!settings.tmdbKey) { showToast('TMDB kulcs szükséges!', 'error'); return; }
+  showToast('Backdrop letöltése...');
+  try {
+    // If we have tmdb_id, fetch directly; otherwise search
+    let backdropUrl = '';
+    if (item.tmdb_id) {
+      const r = await fetch(`https://api.themoviedb.org/3/movie/${item.tmdb_id}/images?api_key=${settings.tmdbKey}&include_image_language=en,null`);
+      const d = await r.json();
+      const backdrops = d.backdrops || [];
+      // Pick best backdrop (highest vote_average or first)
+      const best = backdrops.sort((a,b) => b.vote_average - a.vote_average)[0];
+      if (best) backdropUrl = `https://image.tmdb.org/t/p/original${best.file_path}`;
+    } else {
+      const result = await fetchTMDB(item);
+      if (result?.cover_url) backdropUrl = result.cover_url;
+    }
+    if (backdropUrl) {
+      db[currentDetailIdx].cover_url = backdropUrl;
+      saveDB();
+      // Update hero immediately
+      document.getElementById('detail-bg').style.backgroundImage = `url(${backdropUrl})`;
+      showToast('✅ Backdrop frissítve!', 'success');
+    } else {
+      showToast('Nem található backdrop erre a filmre.', 'error');
+    }
+  } catch(e) {
+    showToast('Hiba: ' + e.message, 'error');
+  }
+}
+
+async function batchFetchBackdrops() {
+  if (!settings.tmdbKey) { showToast('TMDB kulcs szükséges!', 'error'); return; }
+  const missing = db.filter(m => !m.cover_url && m.tmdb_id);
+  if (!missing.length) { showToast('Minden filmhez van már backdrop!', 'success'); return; }
+  showToast(`${missing.length} backdrop letöltése...`);
+  let done = 0;
+  for (const item of missing) {
+    try {
+      const r = await fetch(`https://api.themoviedb.org/3/movie/${item.tmdb_id}?api_key=${settings.tmdbKey}`);
+      const d = await r.json();
+      if (d.backdrop_path) {
+        const idx = db.indexOf(item);
+        db[idx].cover_url = `https://image.tmdb.org/t/p/w780${d.backdrop_path}`;
+        done++;
+      }
+    } catch(e) {}
+    await new Promise(r => setTimeout(r, 260));
+  }
+  saveDB();
+  showToast(`✅ ${done} backdrop letöltve!`, 'success');
+}
+
 
 
 
@@ -5228,14 +5535,38 @@ function renderBackupsList() {
     </div>`).join('');
 }
 
+function buildBackupDiff(backupData) {
+  try {
+    const old = JSON.parse(backupData);
+    const curIds = new Set(db.map(m => m.id));
+    const oldIds = new Set(old.map(m => m.id));
+    const added   = old.filter(m => !curIds.has(m.id)).length;
+    const removed = db.filter(m => !oldIds.has(m.id)).length;
+    // Count modified (same id, different data)
+    let modified = 0;
+    old.forEach(m => {
+      const cur = db.find(c => c.id === m.id);
+      if (cur && JSON.stringify(cur) !== JSON.stringify(m)) modified++;
+    });
+    const parts = [];
+    if (added   > 0) parts.push(`+${added} film`);
+    if (removed > 0) parts.push(`-${removed} film`);
+    if (modified > 0) parts.push(`~${modified} módosítás`);
+    return parts.length ? parts.join(', ') : 'Nincs változás';
+  } catch(e) { return '?'; }
+}
+
 function restoreBackup(i) {
   const backups = getBackups();
   if (!backups[i]) return;
   const b = backups[i];
+  const diff = buildBackupDiff(b.data);
+  const diffLine = currentLang === 'hu'
+    ? `\nVáltozás az aktuálishoz képest: ${diff}`
+    : `\nChanges vs current: ${diff}`;
   if (!confirm(currentLang==='hu'
-    ? `Visszaállítod ezt a backupot?\n"${b.label}"\n${b.count} film\n\nAz AKTUÁLIS adatok felülíródnak!`
-    : `Restore this backup?\n"${b.label}"\n${b.count} films\n\nThis will overwrite current data!`)) return;
-  // Save current state as backup first
+    ? `Visszaállítod ezt a backupot?\n"${b.label}"\n${b.count} film${diffLine}\n\nAz AKTUÁLIS adatok felülíródnak!`
+    : `Restore this backup?\n"${b.label}"\n${b.count} films${diffLine}\n\nThis will overwrite current data!`)) return;
   saveBackup(currentLang==='hu'?'Auto (visszaállítás előtt)':'Auto (before restore)');
   try {
     db = JSON.parse(b.data);
@@ -5320,6 +5651,11 @@ function openContextMenu(event, idx) {
     watched !== 'watchlist'
       ? { icon:'👁️', label: currentLang==='hu'?'Megnézni':'Add to watchlist', fn:`quickSetWatched(${idx},'watchlist')` }
       : null,
+    { sep: true },
+    { sep: true },
+    { icon:'⭐', label: currentLang==='hu'?'Gyors értékelés':'Quick rating', fn:`openQuickRating(${idx})` },
+    ...(item.format && item.format.includes('4K') ? [{ icon:'📺', label: currentLang==='hu'?'4K minőség kitöltés':'Fill 4K quality', fn:`openQuick4K(${idx})` }] : []),
+    { icon:'📦', label: item.release_id ? (currentLang==='hu'?'Kiadvány megtekintése':'View release') : (currentLang==='hu'?'Release hozzárendelés':'Assign to release'), fn:`openQuickRelease(${idx})` },
     { sep: true },
     { icon:'➕', label: currentLang==='hu'?'Verzió hozzáadása':'Add version', fn:`addVersionToItem(${idx})` },
     { icon:'🗑️', label: currentLang==='hu'?'Törlés':'Delete', fn:`currentDetailIdx=${idx};deleteCurrentItem()`, danger: true },
@@ -6343,30 +6679,33 @@ function showBlurayImportPreview(rows) {
 }
 
 async function importBlurayRows(rows) {
-  let updated = 0, added = 0, skipped = 0;
+  let updated = 0, added = 0, skipped = 0, relCreated = 0;
 
-  // Progress toast
   showToast(t('br_matching'));
 
   for (const row of rows) {
-    const title  = (row['Title'] || '').trim();
-    const ean    = (row['EAN']   || '').trim();
-    const upc    = (row['UPC']   || '').trim();
-    const barcode = ean || upc || '';
-    const studio = (row['Studio'] || '').trim();
-    const country = (row['Country code'] || '').trim();
-    const casing = (row['Casing'] || '').trim();
-    const slipcover = row['Slipcover'] === '1';
-    const bdDiscs = parseInt(row['Blu-ray discs']) || 0;
-    const dvdDiscs = parseInt(row['DVD discs']) || 0;
+    const title       = (row['Title'] || '').trim();
+    const ean         = (row['EAN']   || '').trim();
+    const upc         = (row['UPC']   || '').trim();
+    const barcode     = ean || upc || '';
+    const studio      = (row['Studio'] || '').trim();
+    const country     = (row['Country code'] || '').trim();
+    const casing      = (row['Casing'] || '').trim();
+    const slipcover   = row['Slipcover'] === '1';
+    const memorabilia = row['Memorabilia'] === '1';
+    const digitalCopy = row['Digital copy'] === '1';
+    const bdDiscs     = parseInt(row['Blu-ray discs']) || 0;
+    const dvdDiscs    = parseInt(row['DVD discs']) || 0;
     const releaseDate = (row['Release date'] || '').trim();
-    const asin = (row['ASIN'] || '').trim();
-    const comment = (row['Comment'] || '').trim();
+    const dateAdded   = (row['Date added'] || '').trim();
+    const watched     = row['Watched'] === '1';
+    const asin        = (row['ASIN'] || '').trim();
+    const comment     = (row['Comment'] || '').trim();
+    const retailer    = (row['Retailer'] || '').trim();
+    const price       = (row['Price'] || '').trim();
 
-    // Release year from date string
     const relYear = releaseDate ? parseInt(releaseDate.match(/\d{4}/)?.[0]) || null : null;
 
-    // Edition from casing
     const editionMap = {
       'SteelBook': 'Steelbook', 'DigiPack': 'DigiPack',
       'DigiBook': 'DigiBook', 'Futurepak': 'Futurepak',
@@ -6374,12 +6713,52 @@ async function importBlurayRows(rows) {
     };
     const edition = editionMap[casing] || '';
 
-    // bluray.com search URL (by EAN)
     const brayLink = barcode
       ? `https://www.blu-ray.com/search/?quicksearch=1&quicksearch_term=${barcode}&quicksearch_country=all`
       : `https://www.blu-ray.com/search/?quicksearch=1&quicksearch_term=${encodeURIComponent(title)}&quicksearch_country=all`;
 
-    // Find existing item — EAN first, then title
+    // ── Build / update Release record ──
+    const releaseId = barcode
+      ? ('rel_' + barcode)
+      : ('rel_' + title.toLowerCase().replace(/[^a-z0-9]/g,'_').slice(0,30) + '_' + (relYear||''));
+    let rel = releases.find(r => r.id === releaseId);
+    if (!rel) {
+      rel = {
+        id: releaseId,
+        title,
+        barcode: barcode || '',
+        studio: studio || '',
+        country: country || '',
+        casing: casing || '',
+        edition: edition || '',
+        slipcover,
+        memorabilia,
+        digital_copy: digitalCopy,
+        bd_discs: bdDiscs,
+        dvd_discs: dvdDiscs,
+        release_date: releaseDate,
+        release_year: relYear,
+        date_added: dateAdded,
+        watched_all: watched,
+        asin: asin || '',
+        comment: comment || '',
+        retailer: retailer || '',
+        price: price || '',
+        bluray_link: brayLink,
+        cover_url: '',
+        film_ids: [],
+      };
+      releases.push(rel);
+      relCreated++;
+    } else {
+      // Update release fields
+      if (!rel.barcode && barcode) rel.barcode = barcode;
+      if (!rel.studio && studio)   rel.studio = studio;
+      if (!rel.asin && asin)       rel.asin = asin;
+      rel.bluray_link = brayLink;
+    }
+
+    // ── Find existing db item ──
     let idx = -1;
     if (barcode) {
       idx = db.findIndex(m => m.barcode && m.barcode.replace(/\D/g,'') === barcode.replace(/\D/g,''));
@@ -6394,7 +6773,7 @@ async function importBlurayRows(rows) {
 
     const brData = {
       ...(barcode && !db[idx]?.barcode ? {barcode} : {}),
-      ...(studio ? {studios: studio ? [studio] : db[idx]?.studios} : {}),
+      ...(studio ? {studios: [studio]} : {}),
       ...(country ? {bluray_country: country} : {}),
       ...(edition ? {edition} : {}),
       slipcover,
@@ -6403,12 +6782,14 @@ async function importBlurayRows(rows) {
       ...(relYear ? {release_year: relYear} : {}),
       ...(asin ? {asin} : {}),
       ...(comment ? {notes: comment} : {}),
+      ...(price ? {purchase_price: price} : {}),
+      ...(retailer ? {retailer} : {}),
       bluray_link: brayLink,
       bluray_title: title,
+      release_id: releaseId,
     };
 
     if (idx >= 0) {
-      // Update existing — only fill empty fields
       const item = db[idx];
       if (!item.barcode && brData.barcode)       item.barcode = brData.barcode;
       if (!item.studios?.length && studio)       item.studios = [studio];
@@ -6419,13 +6800,18 @@ async function importBlurayRows(rows) {
       if (!item.release_year && relYear)         item.release_year = relYear;
       if (!item.asin && asin)                    item.asin = asin;
       if (!item.notes && comment)                item.notes = comment;
+      if (!item.purchase_price && price)         item.purchase_price = price;
+      if (!item.retailer && retailer)            item.retailer = retailer;
       item.bluray_link = brayLink;
       item.bluray_title = title;
+      item.release_id = releaseId;
+      // Link film to release
+      if (!rel.film_ids.includes(item.id)) rel.film_ids.push(item.id);
       updated++;
     } else if (title) {
-      // New item
+      const newId = 'br_' + Date.now() + '_' + Math.random().toString(36).slice(2,7);
       db.push({
-        id: 'br_' + Date.now() + '_' + Math.random().toString(36).slice(2),
+        id: newId,
         type: 'Film',
         title_hu: title, title_en: title,
         year: relYear || null,
@@ -6434,9 +6820,11 @@ async function importBlurayRows(rows) {
         ...brData,
         hdr: 'Nem', hu_sync: 'Nem', hu_sub: 'Nem',
         genres: [], cast: '', director: '', overview: '',
-        poster_url: '', tmdb_id: null, notes: comment,
-        watched: null, rating: 0,
+        poster_url: '', tmdb_id: null,
+        watched: watched ? 'watched' : null, rating: 0,
+        release_id: releaseId,
       });
+      if (!rel.film_ids.includes(newId)) rel.film_ids.push(newId);
       added++;
     } else {
       skipped++;
@@ -6444,19 +6832,19 @@ async function importBlurayRows(rows) {
   }
 
   saveDB();
+  saveReleases();
   renderGrid();
 
   const msg = currentLang === 'hu'
-    ? `✅ Import kész: ${updated} ${t('br_updated')}, ${added} ${t('br_added')}, ${skipped} ${t('br_skipped')}`
-    : `✅ ${t('br_done')}: ${updated} ${t('br_updated')}, ${added} ${t('br_added')}, ${skipped} ${t('br_skipped')}`;
+    ? `✅ Import kész: ${updated} frissítve, ${added} hozzáadva, ${relCreated} kiadvány-rekord létrehozva`
+    : `✅ Done: ${updated} updated, ${added} added, ${relCreated} releases created`;
   showToast(msg, 'success');
 
-  // Offer TMDB enrichment for new items
   if (added > 0) {
     setTimeout(() => {
       if (confirm(currentLang==='hu'
-        ? `${added} új kiadvány hozzáadva.\n\nTMDB adatok és poszterek letöltése az új filmekhez?`
-        : `${added} new releases added.\n\nFetch TMDB data and posters for new items?`)) {
+        ? `${added} új film hozzáadva.\n\nTMDB adatok és poszterek letöltése?`
+        : `${added} new items added.\n\nFetch TMDB data and posters?`)) {
         enrichNewItems();
       }
     }, 800);
@@ -6480,6 +6868,869 @@ async function enrichNewItems() {
   saveDB(); renderGrid();
   showToast(`✅ ${done} ${currentLang==='hu'?'film frissítve':'films enriched'}`, 'success');
 }
+// ════════════════════════════════════════
+//  BLURAY MANUAL WIZARD
+// ════════════════════════════════════════
+let _manualWizQueue = [];
+let _manualWizIdx = 0;
+
+function openBlurayManualWizard() {
+  // Films without bluray_link
+  _manualWizQueue = db.map((item, i) => ({item, i})).filter(({item}) => !item.bluray_link);
+  if (!_manualWizQueue.length) {
+    showToast(currentLang==='hu'?'Minden filmhez van már bluray.com adat!':'All films already have bluray.com data!', 'success');
+    return;
+  }
+  _manualWizIdx = 0;
+  renderManualWizStep();
+  document.getElementById('manual-wiz-overlay').style.display = 'flex';
+}
+
+function closeManualWizard() {
+  document.getElementById('manual-wiz-overlay').style.display = 'none';
+}
+
+function renderManualWizStep() {
+  const total = _manualWizQueue.length;
+  if (_manualWizIdx >= total) {
+    closeManualWizard();
+    showToast(currentLang==='hu'?'Manuális kitöltés kész!':'Manual entry complete!', 'success');
+    return;
+  }
+  const {item, i} = _manualWizQueue[_manualWizIdx];
+  const poster = item.poster_url || '';
+  document.getElementById('mwiz-counter').textContent = `${_manualWizIdx + 1} / ${total}`;
+  document.getElementById('mwiz-title').textContent = item.title_hu || item.title_en || '—';
+  document.getElementById('mwiz-year').textContent = item.year || '';
+  document.getElementById('mwiz-poster').src = poster;
+  document.getElementById('mwiz-poster').style.display = poster ? '' : 'none';
+  // Clear fields
+  ['mwiz-ean','mwiz-studio','mwiz-casing','mwiz-bd-discs','mwiz-dvd-discs',
+   'mwiz-rel-date','mwiz-asin','mwiz-comment','mwiz-price','mwiz-cover-url'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('mwiz-slipcover').checked = false;
+  document.getElementById('mwiz-memorabilia').checked = false;
+  // Pre-fill from existing data
+  if (item.barcode) document.getElementById('mwiz-ean').value = item.barcode;
+  if (item.studios?.length) document.getElementById('mwiz-studio').value = item.studios[0];
+  if (item.edition && item.edition !== 'Standard') document.getElementById('mwiz-casing').value = item.edition;
+  if (item.discs) document.getElementById('mwiz-bd-discs').value = item.discs;
+  if (item.release_year) document.getElementById('mwiz-rel-date').value = item.release_year;
+  if (item.asin) document.getElementById('mwiz-asin').value = item.asin;
+  if (item.notes) document.getElementById('mwiz-comment').value = item.notes;
+}
+
+function manualWizSave() {
+  const {item, i} = _manualWizQueue[_manualWizIdx];
+  const ean        = document.getElementById('mwiz-ean').value.trim();
+  const studio     = document.getElementById('mwiz-studio').value.trim();
+  const casing     = document.getElementById('mwiz-casing').value.trim();
+  const bdDiscs    = parseInt(document.getElementById('mwiz-bd-discs').value) || 0;
+  const dvdDiscs   = parseInt(document.getElementById('mwiz-dvd-discs').value) || 0;
+  const relDate    = document.getElementById('mwiz-rel-date').value.trim();
+  const asin       = document.getElementById('mwiz-asin').value.trim();
+  const comment    = document.getElementById('mwiz-comment').value.trim();
+  const price      = document.getElementById('mwiz-price').value.trim();
+  const slipcover  = document.getElementById('mwiz-slipcover').checked;
+  const memorabilia= document.getElementById('mwiz-memorabilia').checked;
+  const coverUrl   = document.getElementById('mwiz-cover-url').value.trim();
+
+  const relYear = relDate ? parseInt(relDate.match(/\d{4}/)?.[0]) || null : null;
+  const editionMap = {'SteelBook':'Steelbook','Steelbook':'Steelbook','DigiPack':'DigiPack','DigiBook':'DigiBook','Futurepak':'Futurepak'};
+  const edition = editionMap[casing] || casing || '';
+
+  const brayLink = ean
+    ? `https://www.blu-ray.com/search/?quicksearch=1&quicksearch_term=${ean}&quicksearch_country=all`
+    : `https://www.blu-ray.com/search/?quicksearch=1&quicksearch_term=${encodeURIComponent(item.title_en||item.title_hu||'')}&quicksearch_country=all`;
+
+  const releaseId = ean
+    ? ('rel_' + ean)
+    : ('rel_' + (item.title_en||item.title_hu||'').toLowerCase().replace(/[^a-z0-9]/g,'_').slice(0,30) + '_' + (relYear||''));
+
+  // Update db item
+  if (ean && !item.barcode) db[i].barcode = ean;
+  if (studio) db[i].studios = [studio];
+  if (edition) db[i].edition = edition;
+  if (bdDiscs > 0) db[i].discs = bdDiscs;
+  if (dvdDiscs > 0) db[i].dvd_discs = dvdDiscs;
+  if (relYear) db[i].release_year = relYear;
+  if (asin) db[i].asin = asin;
+  if (comment) db[i].notes = comment;
+  if (price) db[i].purchase_price = price;
+  if (slipcover) db[i].slipcover = true;
+  if (coverUrl) db[i].cover_url = coverUrl;
+  db[i].bluray_link = brayLink;
+  db[i].bluray_manual = true;
+  db[i].release_id = releaseId;
+
+  // Create/update Release record
+  let rel = releases.find(r => r.id === releaseId);
+  if (!rel) {
+    rel = {
+      id: releaseId, title: item.title_en || item.title_hu || '',
+      barcode: ean, studio, country: item.bluray_country || '',
+      casing, edition, slipcover, memorabilia,
+      bd_discs: bdDiscs, dvd_discs: dvdDiscs,
+      release_date: relDate, release_year: relYear,
+      asin, comment, price,
+      bluray_link: brayLink, cover_url: coverUrl || '',
+      film_ids: [item.id], bluray_manual: true,
+    };
+    releases.push(rel);
+  } else {
+    if (!rel.film_ids.includes(item.id)) rel.film_ids.push(item.id);
+    if (coverUrl) rel.cover_url = coverUrl;
+  }
+
+  saveDB(); saveReleases();
+  _manualWizIdx++;
+  renderManualWizStep();
+}
+
+function manualWizSkip() {
+  _manualWizIdx++;
+  renderManualWizStep();
+}
+
+function manualWizCoverUpload(evt) {
+  const file = evt.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const url = e.target.result;
+    document.getElementById('mwiz-cover-preview').src = url;
+    document.getElementById('mwiz-cover-preview').style.display = '';
+    document.getElementById('mwiz-cover-url').value = url;
+  };
+  reader.readAsDataURL(file);
+}
+
+// ════════════════════════════════════════
+//  RELEASE VIEW
+// ════════════════════════════════════════
+let currentReleaseView = false;
+
+function toggleReleaseView() {
+  currentReleaseView = !currentReleaseView;
+  const btn = document.getElementById('release-view-toggle');
+  if (btn) btn.classList.toggle('active', currentReleaseView);
+  renderGrid();
+}
+
+function renderReleases() {
+  const grid = document.getElementById('movie-grid');
+  if (!releases.length) {
+    grid.innerHTML = `<div style="grid-column:1/-1"><div class="empty-state"><div class="empty-icon">📦</div><div class="empty-title">Még nincsenek kiadványok</div><div class="empty-sub">Importáld a bluray.com CSV-t a Szinkron nézetből</div></div></div>`;
+    return;
+  }
+  grid.innerHTML = releases.map(rel => buildReleaseCardHTML(rel)).join('');
+}
+
+function buildReleaseCardHTML(rel) {
+  const poster = rel.cover_url || '';
+  const filmCount = rel.film_ids ? rel.film_ids.length : 0;
+  const totalDiscs = (rel.bd_discs || 0) + (rel.dvd_discs || 0);
+  const fmtBadge = rel.title && rel.title.includes('4K') ? '<span class="format-badge format-4K">4K</span>' : '<span class="format-badge format-BD">BD</span>';
+
+  const imgTag = poster
+    ? `<img class="movie-card-img" src="${poster}" loading="lazy" onerror="this.style.display='none'">`
+    : `<div class="movie-card-placeholder"><div class="movie-card-placeholder-icon">📦</div><div class="movie-card-placeholder-title">${escHtml(rel.title||'?')}</div></div>`;
+
+  return `<div class="movie-card" onclick="openReleaseDetail('${escHtml(rel.id)}')" style="cursor:pointer">
+    ${imgTag}
+    ${poster ? `<div class="movie-card-overlay"><div class="movie-card-title">${escHtml(rel.title||'')}</div></div>` : ''}
+    <div class="card-info-panel">
+      ${fmtBadge}
+      ${totalDiscs ? `<span class="card-source-badge card-source-disc">${totalDiscs}💿</span>` : ''}
+      ${filmCount > 1 ? `<span class="card-source-badge" style="background:rgba(124,92,252,0.85);color:white">${filmCount}🎬</span>` : ''}
+      ${rel.slipcover ? `<span class="card-audio-badge">Slip</span>` : ''}
+    </div>
+    ${rel.edition === 'Steelbook' ? `<div class="status-badge" style="background:rgba(79,142,247,0.85);color:white">Steel</div>` : ''}
+  </div>`;
+}
+
+function openReleaseDetail(releaseId) {
+  const rel = releases.find(r => r.id === releaseId);
+  if (!rel) return;
+  const films = rel.film_ids ? rel.film_ids.map(fid => db.find(m => m.id === fid)).filter(Boolean) : [];
+
+  const filmList = films.map(f =>
+    `<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer" onclick="openDetail(${db.indexOf(f)})">
+      ${f.poster_url ? `<img src="${f.poster_url}" style="width:36px;height:52px;object-fit:cover;border-radius:4px;flex-shrink:0">` : '<div style="width:36px;height:52px;background:var(--surface2);border-radius:4px;flex-shrink:0"></div>'}
+      <div style="flex:1;min-width:0">
+        <div style="font-weight:600;font-size:14px">${escHtml(f.title_hu||f.title_en||'')}</div>
+        <div style="font-size:12px;color:var(--text3)">${f.year||''} · ${f.format||''}</div>
+      </div>
+    </div>`
+  ).join('');
+
+  const coverInput = `<div style="margin-top:12px">
+    <div style="font-size:12px;color:var(--text2);margin-bottom:6px">Borítókép URL:</div>
+    <input id="rel-cover-url-input" class="form-input" style="margin-bottom:6px" value="${escHtml(rel.cover_url||'')}" placeholder="https://...">
+    <div style="display:flex;gap:8px">
+      <button class="btn-secondary" onclick="document.getElementById('rel-cover-file').click()">📁 Fájl feltöltés</button>
+      <button class="btn-secondary" onclick="saveReleaseCover('${escHtml(rel.id)}')">💾 Mentés</button>
+    </div>
+    <input type="file" id="rel-cover-file" accept="image/*" style="display:none" onchange="loadReleaseCoverFile('${escHtml(rel.id)}',this)">
+    ${rel.cover_url ? `<img src="${rel.cover_url}" style="margin-top:8px;max-height:120px;border-radius:6px">` : ''}
+  </div>`;
+
+  document.getElementById('detail-view').innerHTML = `
+    <div style="padding:16px 16px 0;display:flex;align-items:center;gap:12px">
+      <button class="back-btn" onclick="closeDetail()">←</button>
+      <div style="flex:1;font-size:17px;font-weight:700">${escHtml(rel.title||'')}</div>
+    </div>
+    <div style="padding:16px">
+      <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px">
+        <div style="background:var(--surface);border-radius:8px;padding:10px 16px;text-align:center"><div style="font-size:20px;font-weight:700">${(rel.bd_discs||0)+(rel.dvd_discs||0)}</div><div style="font-size:11px;color:var(--text2)">lemez</div></div>
+        <div style="background:var(--surface);border-radius:8px;padding:10px 16px;text-align:center"><div style="font-size:20px;font-weight:700">${films.length}</div><div style="font-size:11px;color:var(--text2)">film</div></div>
+        ${rel.studio ? `<div style="background:var(--surface);border-radius:8px;padding:10px 16px;text-align:center"><div style="font-size:13px;font-weight:600">${escHtml(rel.studio)}</div><div style="font-size:11px;color:var(--text2)">stúdió</div></div>` : ''}
+        ${rel.release_year ? `<div style="background:var(--surface);border-radius:8px;padding:10px 16px;text-align:center"><div style="font-size:20px;font-weight:700">${rel.release_year}</div><div style="font-size:11px;color:var(--text2)">kiadás</div></div>` : ''}
+        ${rel.price ? `<div style="background:var(--surface);border-radius:8px;padding:10px 16px;text-align:center"><div style="font-size:16px;font-weight:700">${escHtml(rel.price)}</div><div style="font-size:11px;color:var(--text2)">ár</div></div>` : ''}
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px">
+        ${rel.edition ? `<span class="badge-pill">${escHtml(rel.edition)}</span>` : ''}
+        ${rel.slipcover ? '<span class="badge-pill">Slipcover</span>' : ''}
+        ${rel.memorabilia ? '<span class="badge-pill">Memorabilia</span>' : ''}
+        ${rel.asin ? `<a href="https://www.amazon.com/dp/${rel.asin}" target="_blank" class="badge-pill">Amazon</a>` : ''}
+        ${rel.bluray_link ? `<a href="${rel.bluray_link}" target="_blank" class="badge-pill">bluray.com</a>` : ''}
+      </div>
+      ${films.length ? `<div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:4px">TARTALOM (${films.length} film)</div>${filmList}` : '<div style="color:var(--text3);font-size:13px">Még nincsenek filmek hozzárendelve. Használd a Release Wizard-ot!</div>'}
+      <div style="margin-top:16px">
+        <button class="btn-secondary" onclick="openReleaseWizard('${escHtml(rel.id)}')">🔗 Filmek hozzárendelése</button>
+      </div>
+      ${coverInput}
+    </div>`;
+  document.getElementById('detail-view').style.transform = 'translateX(0)';
+}
+
+function saveReleaseCover(releaseId) {
+  const rel = releases.find(r => r.id === releaseId);
+  if (!rel) return;
+  rel.cover_url = document.getElementById('rel-cover-url-input').value.trim();
+  saveReleases();
+  showToast(currentLang==='hu'?'Borítókép mentve!':'Cover saved!', 'success');
+  openReleaseDetail(releaseId);
+}
+
+function loadReleaseCoverFile(releaseId, input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    document.getElementById('rel-cover-url-input').value = e.target.result;
+    saveReleaseCover(releaseId);
+  };
+  reader.readAsDataURL(file);
+}
+
+// ════════════════════════════════════════
+//  RELEASE WIZARD (film hozzárendelés)
+// ════════════════════════════════════════
+let _relWizId = null;
+
+function openReleaseWizard(releaseId) {
+  _relWizId = releaseId;
+  const rel = releases.find(r => r.id === releaseId);
+  if (!rel) return;
+  renderReleaseWizard(rel);
+  document.getElementById('release-wiz-overlay').style.display = 'flex';
+}
+
+function closeReleaseWizard() {
+  document.getElementById('release-wiz-overlay').style.display = 'none';
+}
+
+function renderReleaseWizard(rel) {
+  // Auto-suggest films by title keywords from release title
+  const relWords = (rel.title||'').toLowerCase().replace(/collection|4k|trilogy|uhd|complete|series|\d+k/gi,'').split(/\s+/).filter(w => w.length > 2);
+  const suggestions = db.map((item, idx) => {
+    const ft = (item.title_en||item.title_hu||'').toLowerCase();
+    const score = relWords.filter(w => ft.includes(w)).length;
+    return {item, idx, score};
+  }).filter(x => x.score > 0 || rel.film_ids?.includes(x.item.id))
+    .sort((a,b) => b.score - a.score)
+    .slice(0, 20);
+
+  const alreadyLinked = new Set(rel.film_ids || []);
+
+  document.getElementById('release-wiz-title').textContent = rel.title || '';
+  document.getElementById('release-wiz-body').innerHTML = `
+    <div style="font-size:13px;color:var(--text2);margin-bottom:10px">
+      Válaszd ki a kiadványhoz tartozó filmeket. Automatikusan javasolt találatok:
+    </div>
+    <input class="form-input" id="rel-wiz-search" placeholder="Keresés a filmek között..." oninput="filterReleaseWizFilms()" style="margin-bottom:10px">
+    <div id="rel-wiz-list">
+      ${suggestions.map(({item, idx}) => `
+        <label style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:6px;cursor:pointer;border:1px solid var(--border);margin-bottom:4px;background:var(--surface)">
+          <input type="checkbox" value="${item.id}" ${alreadyLinked.has(item.id)?'checked':''} style="flex-shrink:0">
+          ${item.poster_url ? `<img src="${item.poster_url}" style="width:28px;height:40px;object-fit:cover;border-radius:3px;flex-shrink:0">` : ''}
+          <div style="flex:1;min-width:0">
+            <div style="font-size:13px;font-weight:600">${escHtml(item.title_hu||item.title_en||'')}</div>
+            <div style="font-size:11px;color:var(--text3)">${item.year||''} · ${item.format||''}</div>
+          </div>
+        </label>`).join('')}
+    </div>`;
+}
+
+function filterReleaseWizFilms() {
+  const q = document.getElementById('rel-wiz-search').value.toLowerCase();
+  if (!q) return;
+  const rel = releases.find(r => r.id === _relWizId);
+  const alreadyLinked = new Set(rel?.film_ids || []);
+  const filtered = db.map((item, idx) => ({item, idx}))
+    .filter(({item}) => (item.title_hu||item.title_en||'').toLowerCase().includes(q))
+    .slice(0, 15);
+  document.getElementById('rel-wiz-list').innerHTML = filtered.map(({item}) => `
+    <label style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:6px;cursor:pointer;border:1px solid var(--border);margin-bottom:4px;background:var(--surface)">
+      <input type="checkbox" value="${item.id}" ${alreadyLinked.has(item.id)?'checked':''} style="flex-shrink:0">
+      ${item.poster_url ? `<img src="${item.poster_url}" style="width:28px;height:40px;object-fit:cover;border-radius:3px;flex-shrink:0">` : ''}
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:600">${escHtml(item.title_hu||item.title_en||'')}</div>
+        <div style="font-size:11px;color:var(--text3)">${item.year||''} · ${item.format||''}</div>
+      </div>
+    </label>`).join('');
+}
+
+function saveReleaseWizard() {
+  const rel = releases.find(r => r.id === _relWizId);
+  if (!rel) return;
+  const checked = [...document.querySelectorAll('#rel-wiz-list input[type=checkbox]:checked')].map(cb => cb.value);
+  rel.film_ids = checked;
+  // Update release_id on film records
+  checked.forEach(fid => {
+    const item = db.find(m => m.id === fid);
+    if (item) item.release_id = _relWizId;
+  });
+  saveDB(); saveReleases();
+  closeReleaseWizard();
+  showToast(`${checked.length} film hozzárendelve`, 'success');
+  openReleaseDetail(_relWizId);
+}
+
+// ════════════════════════════════════════
+//  HELPER: chip builder
+// ════════════════════════════════════════
+function buildChips(containerId, options, onSelect, multiSelect=false) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  el.innerHTML = options.map(o => `
+    <div class="wiz-chip" data-val="${o.val}" onclick="chipClick(this,'${containerId}',${multiSelect})"
+      style="padding:8px 14px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;
+             border:1.5px solid var(--border);background:var(--surface2);color:var(--text2);
+             transition:all 0.15s;user-select:none">
+      ${o.label}
+    </div>`).join('');
+  el._onSelect = onSelect;
+}
+
+function chipClick(el, containerId, multiSelect) {
+  const container = document.getElementById(containerId);
+  if (!multiSelect) {
+    container.querySelectorAll('.wiz-chip').forEach(c => {
+      c.style.background = 'var(--surface2)';
+      c.style.borderColor = 'var(--border)';
+      c.style.color = 'var(--text2)';
+      c.dataset.selected = '';
+    });
+  }
+  const isSelected = el.dataset.selected === '1';
+  if (isSelected && multiSelect) {
+    el.style.background = 'var(--surface2)';
+    el.style.borderColor = 'var(--border)';
+    el.style.color = 'var(--text2)';
+    el.dataset.selected = '';
+  } else {
+    el.style.background = 'var(--accent)';
+    el.style.borderColor = 'var(--accent)';
+    el.style.color = 'white';
+    el.dataset.selected = '1';
+  }
+  if (container._onSelect) container._onSelect();
+}
+
+function getChipVal(containerId) {
+  const sel = document.querySelector(`#${containerId} .wiz-chip[data-selected="1"]`);
+  return sel ? sel.dataset.val : null;
+}
+
+function getChipVals(containerId) {
+  return [...document.querySelectorAll(`#${containerId} .wiz-chip[data-selected="1"]`)].map(c => c.dataset.val);
+}
+
+function wizFilmInfoHTML(item) {
+  const poster = item.poster_url_hu || item.poster_url_en || item.poster_url || '';
+  return `<div class="wizard-film-info">
+    ${poster ? `<img src="${poster}" class="wizard-film-thumb" style="width:46px;height:68px;object-fit:cover;border-radius:6px;flex-shrink:0">` 
+             : `<div class="wizard-film-thumb">🎬</div>`}
+    <div>
+      <div class="wizard-film-title">${escHtml(item.title_hu||item.title_en||'')}</div>
+      <div class="wizard-film-meta">${item.year||''} · ${item.format||''} · ${item.country||''}</div>
+    </div>
+  </div>`;
+}
+
+// ════════════════════════════════════════
+//  1. 4K QUALITY WIZARD
+// ════════════════════════════════════════
+let _qwizQueue = [], _qwizIdx = 0, _qwizHdr = null, _qwizAudio = null, _qwizHu = null;
+
+function openQualityWizard() {
+  _qwizQueue = db.map((item, i) => ({item, i})).filter(({item}) =>
+    item.format && item.format.includes('4K') && (!item.audio_tracks || !item.audio_tracks.length)
+  );
+  if (!_qwizQueue.length) {
+    _qwizQueue = db.map((item, i) => ({item, i})).filter(({item}) => item.format && item.format.includes('4K'));
+    if (!_qwizQueue.length) { showToast('Nincs 4K film az adatbázisban!', 'error'); return; }
+  }
+  _qwizIdx = 0;
+  _renderQwizStep();
+  document.getElementById('quality-wiz-overlay').style.display = 'flex';
+}
+
+function closeQualityWizard() {
+  document.getElementById('quality-wiz-overlay').style.display = 'none';
+}
+
+function _renderQwizStep() {
+  const total = _qwizQueue.length;
+  if (_qwizIdx >= total) { closeQualityWizard(); saveDB(); showToast(`✅ 4K minőség varázsló kész!`, 'success'); renderGrid(); return; }
+  const {item} = _qwizQueue[_qwizIdx];
+  const pct = Math.round(_qwizIdx / total * 100);
+  document.getElementById('qwiz-subtitle').textContent = `${_qwizIdx + 1} / ${total} film`;
+  document.getElementById('qwiz-bar').style.width = pct + '%';
+  document.getElementById('qwiz-film-info').innerHTML = wizFilmInfoHTML(item);
+  _qwizHdr = item.hdr && item.hdr !== 'Nem' ? item.hdr : null;
+  _qwizAudio = null; _qwizHu = null;
+
+  buildChips('qwiz-hdr-chips', [
+    {val:'Dolby Vision', label:'🟣 Dolby Vision'},
+    {val:'HDR 10+',      label:'HDR10+'},
+    {val:'HDR 10',       label:'HDR10'},
+    {val:'HDR',          label:'HDR'},
+    {val:'Nem',          label:'SDR'},
+  ], () => {
+    _qwizHdr = getChipVal('qwiz-hdr-chips');
+    _updateQwizSave();
+  });
+
+  buildChips('qwiz-audio-chips', [
+    {val:'Dolby Atmos',       label:'🎧 Dolby Atmos'},
+    {val:'TrueHD Atmos',      label:'TrueHD Atmos'},
+    {val:'DTS:X',             label:'DTS:X'},
+    {val:'TrueHD 7.1',        label:'TrueHD 7.1'},
+    {val:'DTS-HD MA 7.1',     label:'DTS-HD MA 7.1'},
+    {val:'TrueHD 5.1',        label:'TrueHD 5.1'},
+    {val:'DTS-HD MA 5.1',     label:'DTS-HD MA 5.1'},
+    {val:'Dolby Digital+ 7.1',label:'DD+ 7.1'},
+    {val:'Dolby Digital 5.1', label:'DD 5.1'},
+  ], () => {
+    _qwizAudio = getChipVal('qwiz-audio-chips');
+    _updateQwizSave();
+  });
+
+  buildChips('qwiz-hu-chips', [
+    {val:'igen',  label:'🇭🇺 Van magyar szinkron'},
+    {val:'nem',   label:'Nincs'},
+    {val:'sub',   label:'Csak felirat'},
+  ], () => {
+    _qwizHu = getChipVal('qwiz-hu-chips');
+    _updateQwizSave();
+  });
+
+  // Pre-select existing values
+  if (item.hdr && item.hdr !== 'Nem') {
+    const hdrChip = document.querySelector(`#qwiz-hdr-chips .wiz-chip[data-val="${item.hdr}"]`);
+    if (hdrChip) chipClick(hdrChip, 'qwiz-hdr-chips', false);
+  }
+  if (item.hu_sync === 'Igen') {
+    const huChip = document.querySelector(`#qwiz-hu-chips .wiz-chip[data-val="igen"]`);
+    if (huChip) chipClick(huChip, 'qwiz-hu-chips', false);
+  }
+  document.getElementById('qwiz-save-btn').disabled = true;
+}
+
+function _updateQwizSave() {
+  document.getElementById('qwiz-save-btn').disabled = !(_qwizHdr && _qwizAudio);
+}
+
+function qwizSave() {
+  const {item, i} = _qwizQueue[_qwizIdx];
+  if (_qwizHdr) db[i].hdr = _qwizHdr;
+  if (_qwizAudio) {
+    const existing = db[i].audio_tracks || [];
+    // Add EN audio track if not already there
+    if (!existing.find(t => t.lang === 'en')) {
+      existing.unshift({lang: 'en', format: _qwizAudio});
+    } else {
+      existing[0].format = _qwizAudio;
+    }
+    if (_qwizHu === 'igen') {
+      if (!existing.find(t => t.lang === 'hu')) existing.push({lang: 'hu', format: 'Dolby Digital 5.1'});
+      db[i].hu_sync = 'Igen';
+    } else if (_qwizHu === 'sub') {
+      db[i].hu_sub = 'Igen';
+    }
+    db[i].audio_tracks = existing;
+  }
+  _qwizIdx++;
+  _renderQwizStep();
+}
+
+function qwizSkip() {
+  _qwizIdx++;
+  _renderQwizStep();
+}
+
+// ════════════════════════════════════════
+//  2. COLLECTION / DISC WIZARD
+// ════════════════════════════════════════
+let _dwizQueue = [], _dwizIdx = 0, _dwizDiscSel = null, _dwizVersionLink = null;
+
+const DISC_PRESETS = [
+  {val:'BD',              label:'💿 BD'},
+  {val:'4K+BD',           label:'4K + BD'},
+  {val:'4K+BD+Bonus',     label:'4K + BD + Bonus'},
+  {val:'BD+Bonus',        label:'BD + Bonus'},
+  {val:'BD+3D',           label:'BD + 3D'},
+  {val:'BD+DVD',          label:'BD + DVD'},
+  {val:'4K+BD+BD+Bonus',  label:'4K + 2×BD + Bonus'},
+  {val:'BD+3D+Bonus',     label:'BD + 3D + Bonus'},
+  {val:'DVD',             label:'📀 DVD'},
+];
+
+function openDiscWizard() {
+  // Films with collection_name set, or multi-disc, that don't have a release_id yet
+  _dwizQueue = db.map((item, i) => ({item, i})).filter(({item}) =>
+    !item.release_id && ((item.collection_name && item.collection_name.trim()) || (item.discs || 0) > 1)
+  );
+  if (!_dwizQueue.length) {
+    _dwizQueue = db.map((item, i) => ({item, i})).filter(({item}) => !item.release_id);
+  }
+  if (!_dwizQueue.length) { showToast(currentLang==='hu'?'Minden filmhez van már release adat!':'All films have release data!', 'success'); return; }
+  _dwizIdx = 0;
+  _renderDwizStep();
+  document.getElementById('disc-wiz-overlay').style.display = 'flex';
+}
+
+function closeDiscWizard() {
+  document.getElementById('disc-wiz-overlay').style.display = 'none';
+}
+
+function _renderDwizStep() {
+  const total = _dwizQueue.length;
+  if (_dwizIdx >= total) {
+    closeDiscWizard(); saveDB(); saveReleases();
+    showToast(`✅ Kollekció varázsló kész!`, 'success'); renderGrid(); return;
+  }
+  const {item} = _dwizQueue[_dwizIdx];
+  const pct = Math.round(_dwizIdx / total * 100);
+  document.getElementById('dwiz-subtitle').textContent = `${_dwizIdx + 1} / ${total} film`;
+  document.getElementById('dwiz-bar').style.width = pct + '%';
+  document.getElementById('dwiz-film-info').innerHTML = wizFilmInfoHTML(item);
+  _dwizDiscSel = null; _dwizVersionLink = null;
+
+  buildChips('dwiz-disc-chips', DISC_PRESETS, () => {
+    _dwizDiscSel = getChipVal('dwiz-disc-chips');
+    // Auto-fill format custom if empty
+    const customEl = document.getElementById('dwiz-format-custom');
+    if (_dwizDiscSel && !customEl.value) customEl.value = _dwizDiscSel;
+    // Auto-fill BD count
+    const bdMap = {'BD':1,'4K+BD':2,'4K+BD+Bonus':3,'BD+Bonus':2,'BD+3D':2,'BD+DVD':2,'4K+BD+BD+Bonus':4,'BD+3D+Bonus':3,'DVD':1};
+    const bdEl = document.getElementById('dwiz-bd-count');
+    if (!bdEl.value && bdMap[_dwizDiscSel]) bdEl.value = bdMap[_dwizDiscSel];
+  });
+
+  // Pre-select from existing format
+  const fmtMap = {
+    'Bluray':'BD','4K UHD + BD':'4K+BD','Bluray + DVD':'BD+DVD',
+    'Bluray + 3D':'BD+3D','4K UHD':'BD',
+  };
+  const preVal = fmtMap[item.format];
+  if (preVal) {
+    setTimeout(() => {
+      const chip = document.querySelector(`#dwiz-disc-chips .wiz-chip[data-val="${preVal}"]`);
+      if (chip) chipClick(chip, 'dwiz-disc-chips', false);
+    }, 50);
+  }
+
+  document.getElementById('dwiz-bd-count').value = item.discs || '';
+  document.getElementById('dwiz-format-custom').value = '';
+  document.getElementById('dwiz-versions-search').value = '';
+  document.getElementById('dwiz-versions-results').innerHTML = '';
+
+  // Show versions info if already has versions_group
+  const vg = item.versions_group;
+  if (vg) {
+    const linked = db.filter(m => m.versions_group === vg && m.id !== item.id);
+    document.getElementById('dwiz-versions-info').textContent = linked.length
+      ? `Már össze van kötve: ${linked.map(m => m.title_en||m.title_hu).join(', ')}`
+      : 'Nincs más verzió hozzárendelve.';
+  } else {
+    document.getElementById('dwiz-versions-info').textContent = 'Ha ez a film más kiadásban is megvan, keresd meg:';
+  }
+}
+
+function dwizSearchVersions() {
+  const q = document.getElementById('dwiz-versions-search').value.toLowerCase().trim();
+  const res = document.getElementById('dwiz-versions-results');
+  if (!q || q.length < 2) { res.innerHTML = ''; return; }
+  const {item} = _dwizQueue[_dwizIdx];
+  const matches = db.filter(m => m.id !== item.id &&
+    ((m.title_en||'').toLowerCase().includes(q) || (m.title_hu||'').toLowerCase().includes(q))
+  ).slice(0, 6);
+  res.innerHTML = matches.map(m => `
+    <div onclick="dwizLinkVersion('${m.id}')" style="display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:6px;cursor:pointer;border:1px solid var(--border);margin-bottom:4px;background:var(--surface)${_dwizVersionLink===m.id?';border-color:var(--accent)':''}">
+      ${m.poster_url ? `<img src="${m.poster_url}" style="width:28px;height:40px;object-fit:cover;border-radius:3px;flex-shrink:0">` : ''}
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:600">${escHtml(m.title_hu||m.title_en||'')}</div>
+        <div style="font-size:11px;color:var(--text3)">${m.year||''} · ${m.format||''}</div>
+      </div>
+      ${_dwizVersionLink===m.id ? '<span style="color:var(--accent);font-size:18px">✓</span>' : ''}
+    </div>`).join('');
+}
+
+function dwizLinkVersion(id) {
+  _dwizVersionLink = (_dwizVersionLink === id) ? null : id;
+  // Re-render results to show selection
+  dwizSearchVersions();
+}
+
+function dwizUpdateSaveBtn() {}
+
+function dwizSave() {
+  const {item, i} = _dwizQueue[_dwizIdx];
+  const bdCount = parseInt(document.getElementById('dwiz-bd-count').value) || item.discs || 1;
+  const customFmt = document.getElementById('dwiz-format-custom').value.trim();
+
+  // Update disc count
+  db[i].discs = bdCount;
+
+  // Map preset to format
+  if (_dwizDiscSel) {
+    const fmtMap = {
+      'BD':'Bluray','4K+BD':'4K UHD + BD','4K+BD+Bonus':'4K UHD + BD',
+      'BD+Bonus':'Bluray','BD+3D':'Bluray + 3D','BD+DVD':'Bluray + DVD',
+      '4K+BD+BD+Bonus':'4K UHD + BD','BD+3D+Bonus':'Bluray + 3D','DVD':'DVD',
+    };
+    if (fmtMap[_dwizDiscSel] && (!item.format || item.format === 'Bluray')) {
+      db[i].format = fmtMap[_dwizDiscSel];
+    }
+    // Store disc_composition for detail view
+    db[i].disc_composition = customFmt || _dwizDiscSel;
+  }
+
+  // Create/update Release record
+  const releaseId = item.release_id || ('rel_wiz_' + item.id);
+  db[i].release_id = releaseId;
+  if (!releases.find(r => r.id === releaseId)) {
+    releases.push({
+      id: releaseId,
+      title: item.collection_name || item.title_en || item.title_hu || '',
+      bd_discs: bdCount,
+      format: _dwizDiscSel || item.format || '',
+      disc_composition: customFmt || _dwizDiscSel || '',
+      film_ids: [item.id],
+      cover_url: '',
+    });
+  }
+
+  // Link versions_group
+  if (_dwizVersionLink) {
+    const vgId = item.versions_group || db.find(m=>m.id===_dwizVersionLink)?.versions_group || ('vg_' + Date.now());
+    db[i].versions_group = vgId;
+    const vi = db.findIndex(m => m.id === _dwizVersionLink);
+    if (vi >= 0) db[vi].versions_group = vgId;
+  }
+
+  _dwizIdx++;
+  _renderDwizStep();
+}
+
+function dwizSkip() {
+  _dwizIdx++;
+  _renderDwizStep();
+}
+
+// ════════════════════════════════════════
+//  3. RATING WIZARD
+// ════════════════════════════════════════
+let _rwizQueue = [], _rwizIdx = 0, _rwizRating = 0, _rwizWatched = null;
+
+function openRatingWizard() {
+  _rwizQueue = db.map((item, i) => ({item, i})).filter(({item}) => !item.rating && !item.watched);
+  if (!_rwizQueue.length) {
+    _rwizQueue = db.map((item, i) => ({item, i})).filter(({item}) => !item.rating);
+  }
+  if (!_rwizQueue.length) { showToast('Minden filmhez van értékelés!', 'success'); return; }
+  _rwizIdx = 0; _rwizRating = 0; _rwizWatched = null;
+  _renderRwizStep();
+  document.getElementById('rating-wiz-overlay').style.display = 'flex';
+}
+
+function closeRatingWizard() {
+  document.getElementById('rating-wiz-overlay').style.display = 'none';
+}
+
+function _renderRwizStep() {
+  const total = _rwizQueue.length;
+  if (_rwizIdx >= total) {
+    closeRatingWizard(); saveDB();
+    showToast(`✅ Értékelés varázsló kész!`, 'success'); renderGrid(); return;
+  }
+  const {item} = _rwizQueue[_rwizIdx];
+  const pct = Math.round(_rwizIdx / total * 100);
+  document.getElementById('rwiz-subtitle').textContent = `${_rwizIdx + 1} / ${total} film`;
+  document.getElementById('rwiz-bar').style.width = pct + '%';
+  document.getElementById('rwiz-film-info').innerHTML = wizFilmInfoHTML(item);
+  _rwizRating = item.rating || 0;
+  _rwizWatched = item.watched || null;
+
+  // Stars 1-10
+  const starsEl = document.getElementById('rwiz-stars');
+  starsEl.innerHTML = Array.from({length:10}, (_, n) => n+1).map(n => `
+    <div onclick="rwizSetRating(${n})" id="rwiz-star-${n}"
+      style="width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+             font-size:18px;cursor:pointer;border:1.5px solid var(--border);background:${n<=_rwizRating?'var(--accent)':'var(--surface2)'};
+             color:${n<=_rwizRating?'white':'var(--text2)'};transition:all 0.1s;font-weight:700">
+      ${n}
+    </div>`).join('');
+
+  buildChips('rwiz-watched-chips', [
+    {val:'watched',   label:'✅ Megnézett'},
+    {val:'watching',  label:'▶️ Nézem'},
+    {val:'watchlist', label:'👁️ Megnézem'},
+    {val:'want',      label:'🛒 Meg akarom venni'},
+    {val:'none',      label:'— Nincs státusz'},
+  ], () => {
+    _rwizWatched = getChipVal('rwiz-watched-chips');
+    if (_rwizWatched === 'none') _rwizWatched = null;
+    _updateRwizSave();
+  });
+
+  // Pre-select watched
+  if (item.watched) {
+    setTimeout(() => {
+      const chip = document.querySelector(`#rwiz-watched-chips .wiz-chip[data-val="${item.watched}"]`);
+      if (chip) chipClick(chip, 'rwiz-watched-chips', false);
+    }, 50);
+  }
+  document.getElementById('rwiz-save-btn').disabled = (_rwizRating === 0 && !_rwizWatched);
+}
+
+function rwizSetRating(n) {
+  _rwizRating = n;
+  Array.from({length:10}, (_, k) => k+1).forEach(k => {
+    const el = document.getElementById(`rwiz-star-${k}`);
+    if (!el) return;
+    el.style.background = k <= n ? 'var(--accent)' : 'var(--surface2)';
+    el.style.color = k <= n ? 'white' : 'var(--text2)';
+  });
+  _updateRwizSave();
+}
+
+function _updateRwizSave() {
+  document.getElementById('rwiz-save-btn').disabled = (_rwizRating === 0 && !_rwizWatched);
+}
+
+function rwizSave() {
+  const {item, i} = _rwizQueue[_rwizIdx];
+  if (_rwizRating > 0) db[i].rating = _rwizRating;
+  if (_rwizWatched !== null) db[i].watched = _rwizWatched;
+  _rwizIdx++;
+  _renderRwizStep();
+}
+
+function rwizSkip() {
+  _rwizIdx++;
+  _renderRwizStep();
+}
+
+// ════════════════════════════════════════
+//  4. HU AUDIO WIZARD
+// ════════════════════════════════════════
+let _hwizQueue = [], _hwizIdx = 0, _hwizAudioFmt = null, _hwizHasSub = null;
+
+function openHuWizard() {
+  _hwizQueue = db.map((item, i) => ({item, i})).filter(({item}) =>
+    item.hu_sync === 'Igen' && !(item.audio_tracks||[]).find(t => t.lang === 'hu')
+  );
+  if (!_hwizQueue.length) { showToast('Minden magyar szinkronos filmnek van már audio adata!', 'success'); return; }
+  _hwizIdx = 0;
+  _renderHwizStep();
+  document.getElementById('hu-wiz-overlay').style.display = 'flex';
+}
+
+function closeHuWizard() {
+  document.getElementById('hu-wiz-overlay').style.display = 'none';
+}
+
+function _renderHwizStep() {
+  const total = _hwizQueue.length;
+  if (_hwizIdx >= total) {
+    closeHuWizard(); saveDB();
+    showToast(`✅ Magyar hang varázsló kész!`, 'success'); renderGrid(); return;
+  }
+  const {item} = _hwizQueue[_hwizIdx];
+  const pct = Math.round(_hwizIdx / total * 100);
+  document.getElementById('hwiz-subtitle').textContent = `${_hwizIdx + 1} / ${total} film`;
+  document.getElementById('hwiz-bar').style.width = pct + '%';
+  document.getElementById('hwiz-film-info').innerHTML = wizFilmInfoHTML(item);
+  _hwizAudioFmt = null; _hwizHasSub = null;
+
+  buildChips('hwiz-audio-chips', [
+    {val:'TrueHD 5.1',         label:'TrueHD 5.1'},
+    {val:'DTS-HD MA 5.1',      label:'DTS-HD MA 5.1'},
+    {val:'Dolby Digital 5.1',  label:'DD 5.1'},
+    {val:'Dolby Digital 2.0',  label:'DD 2.0'},
+    {val:'Stereo 2.0',         label:'Stereo'},
+    {val:'Mono',               label:'Mono'},
+  ], () => {
+    _hwizAudioFmt = getChipVal('hwiz-audio-chips');
+    _updateHwizSave();
+  });
+
+  buildChips('hwiz-sub-chips', [
+    {val:'igen', label:'✅ Van magyar felirat'},
+    {val:'nem',  label:'Nincs felirat'},
+  ], () => {
+    _hwizHasSub = getChipVal('hwiz-sub-chips');
+    _updateHwizSave();
+  });
+
+  // Pre-select sub if set
+  if (item.hu_sub === 'Igen') {
+    setTimeout(() => {
+      const chip = document.querySelector(`#hwiz-sub-chips .wiz-chip[data-val="igen"]`);
+      if (chip) chipClick(chip, 'hwiz-sub-chips', false);
+    }, 50);
+  }
+  document.getElementById('hwiz-save-btn').disabled = true;
+}
+
+function _updateHwizSave() {
+  document.getElementById('hwiz-save-btn').disabled = !_hwizAudioFmt;
+}
+
+function hwizSave() {
+  const {item, i} = _hwizQueue[_hwizIdx];
+  const tracks = db[i].audio_tracks ? [...db[i].audio_tracks] : [];
+  // Remove existing hu track and re-add
+  const filtered = tracks.filter(t => t.lang !== 'hu');
+  if (_hwizAudioFmt) filtered.push({lang: 'hu', format: _hwizAudioFmt});
+  db[i].audio_tracks = filtered;
+  if (_hwizHasSub === 'igen') db[i].hu_sub = 'Igen';
+  else if (_hwizHasSub === 'nem') db[i].hu_sub = 'Nem';
+  _hwizIdx++;
+  _renderHwizStep();
+}
+
+function hwizSkip() {
+  _hwizIdx++;
+  _renderHwizStep();
+}
+
 
 async function enrichAll() {
   autoBackupBefore(currentLang==='hu'?'Összes TMDB gazdagítás':'Enrich all TMDB');
@@ -7231,7 +8482,7 @@ function initOfflineDetection() {
 })();
 
 // Service Worker
-const SW_VERSION = 'bluvault-v4';
+const SW_VERSION = 'bluvault-v5';
 const POSTER_CACHE = 'bluvault-posters-v1';
 const SHELL_CACHE  = 'bluvault-shell-v4';
 
@@ -7894,6 +9145,135 @@ function getItemVersions(idx) {
     }
     return false;
   });
+}
+
+// ════════════════════════════════════════
+//  HIÁNYOS ADAT JELZŐ
+// ════════════════════════════════════════
+function buildMissingDot(item) {
+  const missingCritical = !item.poster_url && !item.poster_url_en && !item.poster_url_hu;
+  const missingQuality  = item.format && item.format.includes('4K') && (!item.audio_tracks || !item.audio_tracks.length);
+  const missingHdr      = item.format && item.format.includes('4K') && (!item.hdr || item.hdr === 'Nem');
+  if (missingCritical) return `<div class="card-missing-dot" style="background:rgba(231,76,60,0.9)" title="Hiányzó poszter"></div>`;
+  if (missingQuality || missingHdr) return `<div class="card-missing-dot" style="background:rgba(245,200,66,0.9)" title="Hiányzó 4K minőség adat"></div>`;
+  return '';
+}
+
+// ════════════════════════════════════════
+//  GYORS ÉRTÉKELÉS — kontextus menüből
+// ════════════════════════════════════════
+function openQuickRating(idx) {
+  const item = db[idx];
+  if (!item) return;
+  const cur = item.rating || 0;
+  const overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:300;display:flex;align-items:flex-end;justify-content:center';
+  overlay.innerHTML = `
+    <div style="background:var(--bg2);border-radius:20px 20px 0 0;width:100%;max-width:480px;padding:20px 20px 32px">
+      <div style="width:36px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 16px"></div>
+      <div style="font-size:15px;font-weight:700;margin-bottom:4px">${escHtml(item.title_hu||item.title_en||'')}</div>
+      <div style="font-size:12px;color:var(--text3);margin-bottom:16px">${item.year||''}</div>
+      <div style="display:flex;gap:6px;justify-content:center;margin-bottom:16px" id="qr-stars">
+        ${Array.from({length:10},(_,n)=>n+1).map(n=>`
+          <div onclick="qrSetStar(${n})" id="qrs-${n}"
+            style="width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+                   font-size:15px;cursor:pointer;border:1.5px solid var(--border);
+                   background:${n<=cur?'var(--accent)':'var(--surface2)'};
+                   color:${n<=cur?'white':'var(--text2)'};font-weight:700;transition:all 0.1s">${n}</div>`).join('')}
+      </div>
+      <div style="display:flex;gap:8px">
+        <button onclick="this.closest('[style*=fixed]').remove()" style="flex:1;padding:10px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text2);font-size:14px;cursor:pointer">Mégse</button>
+        <button id="qr-save" onclick="qrSave(${idx},this)" style="flex:2;padding:10px;border-radius:8px;border:none;background:var(--accent);color:white;font-size:14px;font-weight:600;cursor:pointer">💾 Mentés</button>
+      </div>
+    </div>`;
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
+  document.body.appendChild(overlay);
+  overlay._rating = cur;
+}
+
+function qrSetStar(n) {
+  const overlay = document.querySelector('[style*="position:fixed"][style*="z-index:300"]');
+  if (!overlay) return;
+  overlay._rating = n;
+  for (let k = 1; k <= 10; k++) {
+    const el = document.getElementById(`qrs-${k}`);
+    if (!el) continue;
+    el.style.background = k <= n ? 'var(--accent)' : 'var(--surface2)';
+    el.style.color = k <= n ? 'white' : 'var(--text2)';
+  }
+}
+
+function qrSave(idx, btn) {
+  const overlay = btn.closest('[style*="position:fixed"]');
+  const rating = overlay?._rating || 0;
+  if (rating > 0) { db[idx].rating = rating; saveDB(); renderGrid(); showToast(`⭐ ${rating}/10 mentve`, 'success'); }
+  overlay?.remove();
+}
+
+// ════════════════════════════════════════
+//  GYORS 4K MINŐSÉG — kontextus menüből
+// ════════════════════════════════════════
+function openQuick4K(idx) {
+  const item = db[idx];
+  if (!item || !item.format?.includes('4K')) {
+    showToast('Ez nem 4K film!', 'error'); return;
+  }
+  // Directly open the quality wizard filtered to this one item
+  _qwizQueue = [{item, i: idx}];
+  _qwizIdx = 0;
+  _renderQwizStep();
+  document.getElementById('quality-wiz-overlay').style.display = 'flex';
+}
+
+// ════════════════════════════════════════
+//  GYORS RELEASE HOZZÁRENDELÉS — kontextus menüből
+// ════════════════════════════════════════
+function openQuickRelease(idx) {
+  const item = db[idx];
+  if (!item) return;
+  if (item.release_id) {
+    openReleaseDetail(item.release_id); return;
+  }
+  // Find releases that might match by title keywords
+  const words = (item.title_en||item.title_hu||'').toLowerCase().split(/\s+/).filter(w=>w.length>3);
+  const suggestions = releases.filter(r =>
+    words.some(w => (r.title||'').toLowerCase().includes(w))
+  ).slice(0,5);
+
+  const overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:300;display:flex;align-items:flex-end;justify-content:center';
+  const suggHtml = suggestions.length
+    ? suggestions.map(r => `
+        <div onclick="quickAssignRelease(${idx},'${escHtml(r.id)}',this.closest('[style*=fixed]'))"
+          style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:8px;cursor:pointer;border:1px solid var(--border);background:var(--surface);margin-bottom:6px">
+          <div style="font-size:20px">📦</div>
+          <div>
+            <div style="font-size:13px;font-weight:600">${escHtml(r.title||'')}</div>
+            <div style="font-size:11px;color:var(--text3)">${r.bd_discs||0} lemez · ${(r.film_ids||[]).length} film</div>
+          </div>
+        </div>`).join('')
+    : `<div style="font-size:13px;color:var(--text3);padding:10px 0">Nincs automatikus javaslat. Menj a Kiadványok nézetbe.</div>`;
+
+  overlay.innerHTML = `
+    <div style="background:var(--bg2);border-radius:20px 20px 0 0;width:100%;max-width:480px;padding:20px 20px 32px">
+      <div style="width:36px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 16px"></div>
+      <div style="font-size:15px;font-weight:700;margin-bottom:14px">📦 Release hozzárendelés</div>
+      ${suggHtml}
+      <button onclick="this.closest('[style*=fixed]').remove()" style="width:100%;margin-top:8px;padding:10px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text2);font-size:14px;cursor:pointer">Mégse</button>
+    </div>`;
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
+  document.body.appendChild(overlay);
+}
+
+function quickAssignRelease(dbIdx, releaseId, overlay) {
+  const rel = releases.find(r => r.id === releaseId);
+  if (!rel) return;
+  db[dbIdx].release_id = releaseId;
+  if (!rel.film_ids) rel.film_ids = [];
+  if (!rel.film_ids.includes(db[dbIdx].id)) rel.film_ids.push(db[dbIdx].id);
+  saveDB(); saveReleases(); renderGrid();
+  overlay?.remove();
+  showToast(`✅ Hozzárendelve: ${rel.title}`, 'success');
 }
 
 // Új verzió hozzáadása: megnyitja a formot az aktuális film adataival előtöltve
